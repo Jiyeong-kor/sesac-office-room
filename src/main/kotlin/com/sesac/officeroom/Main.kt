@@ -1,7 +1,7 @@
 package com.sesac.officeroom
 
 /**
- * Main
+ * Main 주석 test
  */
 fun main() {
 
