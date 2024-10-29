@@ -1,8 +1,8 @@
 package com.sesac.officeroom.data
-/*
-회의실 정보를 담고있는 enum class
+/**
+ * 회의실 정보를 담고있는 enum class
  */
-enum class MeetingRoom ( //회의실 정보를 담고있는 enum class
+enum class MeetingRoom (
     val minCapacity: Int, //최소 인원
     val maxCapacity: Int, //최대 수용 가능 인원
     val baseCostPerHour: Int, //시간당 기본요금
