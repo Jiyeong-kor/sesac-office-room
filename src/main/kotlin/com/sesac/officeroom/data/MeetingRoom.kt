@@ -1,4 +1,5 @@
 package com.sesac.officeroom.data
+
 /**
  * 회의실 정보를 담고있는 enum class
  */
