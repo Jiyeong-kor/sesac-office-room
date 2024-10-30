@@ -31,7 +31,7 @@ object View {
                 paddedLine += " ".repeat(width - paddedLine.length) // 뒤쪽 공백 추가
 
                 // 가운데 정렬된 줄을 출력
-                System.out.printf("%-" + width + "s%n", paddedLine)
+                print(String.format("%-${width}s%n", paddedLine))
             }
         }
 
