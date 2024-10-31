@@ -17,3 +17,4 @@ enum class MeetingRoom (
     LESS_GOOD_ROOM(4,12,2000,false,false)
     //덜좋은 회의실: 최소인원 4명, 최대인원 12명, 기본요금 2000원, 창문이랑 포토부스 없음
 }
+
