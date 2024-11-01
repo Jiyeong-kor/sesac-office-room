@@ -2,9 +2,11 @@ package com.sesac.officeroom.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.toCSVString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileWriter
 
 class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
 
@@ -46,11 +48,15 @@ class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
             }
         }
 
-        with(file.writer()) {
-            val res = write(reservationDTO.toString())
-            close()
+        withContext(Dispatchers.IO) {
+            val fileWriter = FileWriter(file, true)
+            val bufferedWriter = fileWriter.buffered()
+
+            with(bufferedWriter) {
+                write("${reservationDTO.toCSVString()}\n")
+                flush()
+                close()
+            }
         }
     }
-
-
 }

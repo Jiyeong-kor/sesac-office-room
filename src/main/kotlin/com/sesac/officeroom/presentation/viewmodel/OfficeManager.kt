@@ -1,9 +1,9 @@
-package com.sesac.officeroom.viewmodel
+package com.sesac.officeroom.presentation.viewmodel
 
 import com.sesac.officeroom.data.MeetingRoom
-import com.sesac.officeroom.view.Input
-import com.sesac.officeroom.view.Strings
-import com.sesac.officeroom.view.View
+import com.sesac.officeroom.presentation.common.Input
+import com.sesac.officeroom.presentation.common.Strings
+import com.sesac.officeroom.presentation.common.View
 
 
 /**

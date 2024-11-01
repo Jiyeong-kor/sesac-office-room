@@ -1,4 +1,4 @@
-package com.sesac.officeroom.view
+package com.sesac.officeroom.presentation.common
 
 import java.util.*
 

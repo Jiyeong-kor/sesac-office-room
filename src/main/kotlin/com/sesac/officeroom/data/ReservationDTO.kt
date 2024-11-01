@@ -22,7 +22,7 @@ data class ReservationDTO(
     val phoneNumber: String,
 )
 
-fun ReservationDTO.toString(): String {
+fun ReservationDTO.toCSVString(): String {
     return listOf(
         officeId,
         date,

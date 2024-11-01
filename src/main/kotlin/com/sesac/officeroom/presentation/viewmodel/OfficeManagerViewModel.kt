@@ -1,4 +1,4 @@
-package com.sesac.officeroom.viewmodel
+package com.sesac.officeroom.presentation.viewmodel
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
