@@ -70,19 +70,21 @@ class OfficeManager {
      * desc: 회의실 예약 과정 중 조건에 해당하여 예약이 가능한 회의실을 '보여주기'만 하는 기능
      */
     private fun showAvailableRooms(): String {
+
+        View.prettyPrintConsole(Strings.STEP_1_1_HEADER_MESSAGE)
         //인원 수 입력
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_1)
+        print(Strings.STEP_1_1_MESSAGE_1)
         val capacity = Input.isInt()
 
         //창문 필요 여부 입력
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_2)
+        print(Strings.STEP_1_1_MESSAGE_2)
         val needWindow = when (Input.isInt()) {
             1 -> true
             else -> false
         }
 
         //포토 부스 필요 여부 입력
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_3)
+        print(Strings.STEP_1_1_MESSAGE_3)
         val needPhotoBooth = when (Input.isInt()) {
             1 -> true
             else -> false
