@@ -90,21 +90,17 @@ class OfficeManager {
             else -> false
         }
         //TODO: 입력 잘못 받았을 경우 예외처리 해주기
-
-        val result = StringBuilder()
-        MeetingRoom.entries.forEach { room ->
-            // getAvailableRoomInfo 함수를 통해 조건에 해당하는 회의실 정보를 result에 추가
-            getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)?.let { formattedRoomInfo ->
-                result.append(formattedRoomInfo).append(Strings.NEW_LINE)
-            }
-        }
+        //mapNotNull은 MeetingRooms.entries를 돌면서 getAvailableRoomInfo 함수의 반환값이 null이 아닌 경우에만 처리함
+        val result = MeetingRoom.entries.mapNotNull { room ->
+            getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)
+        //필터링 된 회의실들을 받아서 줄 단위로 연결함
+        }.joinToString(separator = Strings.NEW_LINE)
         return if (result.isEmpty()) {
             // 조건에 해당하는 회의실이 없을 경우 보여줄 메시지
             Strings.STEP_1_1_NO_ROOM_FOUND
         } else {
             // 해당하는 조건의 회의실들을 return해 줌
-            //trim()으로 result에 마지막으로 append한 Strings.NEW_LINE을 제거
-            result.toString().trim()
+            result
         }
     }
 
