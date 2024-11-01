@@ -1,11 +1,15 @@
 package com.sesac.officeroom.presentation.view
 
 import com.sesac.officeroom.data.MeetingRoom
+import com.sesac.officeroom.data.ReservationDTO
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
 import com.sesac.officeroom.repository.OfficeManagerRepositoryImpl
 import com.sesac.officeroom.presentation.viewmodel.OfficeManagerViewModel
+import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.LocalTime
 
 
 class OfficeManagerView {
@@ -21,6 +25,7 @@ class OfficeManagerView {
             when(Input.isInt()) {
                 1 -> manageOfficeRoomProcess()
                 2 -> manageSalesProcess()
+                -1 -> test()
                 0 -> break
                 else -> View.prettyPrintConsole(Strings.ERROR_MESSAGE)
             }
@@ -211,6 +216,31 @@ class OfficeManagerView {
                 4 -> {}
                 0 -> break
             }
+        }
+    }
+
+    fun test() {
+        // office 목록 불러오기
+        runBlocking {
+            val officeList = viewModel.getOfficeList()
+            officeList.listIterator().forEach {
+                println(it)
+            }
+        }
+
+        // 예약 데이터 저장
+        runBlocking {
+            val date = LocalDate.of(2024, 11, 1)
+            val time = LocalTime.of(9, 0)
+            val tempDTO = ReservationDTO(
+                1,
+                date,
+                time,
+                1,
+                4,
+                "01077300328"
+            )
+            viewModel.makeReservation(tempDTO)
         }
     }
 }
