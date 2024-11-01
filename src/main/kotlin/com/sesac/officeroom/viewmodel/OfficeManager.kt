@@ -52,10 +52,17 @@ class OfficeManager {
      * desc: 회의실 예약 process
      */
     private fun roomReservationProcess() {
-        View.prettyPrintConsole(showAvailableRooms() //예약이 가능한 회의실을 보여줌
-        + "\n" + Strings.STEP_1_1_ROOM_CHOOSE) //예약을 원하는 회의실 번호를 입력하라는 메시지
-        val roomNumber = Input.isInt() //예약 받은 회의실 번호를 roomNumber에 담음
-    }
+
+        //예약이 가능한 회의실을 보여줌
+        View.prettyPrintConsole(showAvailableRooms()
+
+                + Strings.NEW_LINE
+
+                //예약을 원하는 회의실 번호를 입력하라는 메시지
+                + Strings.STEP_1_1_ROOM_CHOOSE)
+
+        //예약 받은 회의실 번호를 roomNumber에 담음
+        val roomNumber = Input.isInt()     }
 
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
@@ -63,17 +70,20 @@ class OfficeManager {
      * desc: 회의실 예약 과정 중 조건에 해당하여 예약이 가능한 회의실을 '보여주기'만 하는 기능
      */
     private fun showAvailableRooms(): String {
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_1)//인원 수 입력
+        //인원 수 입력
+        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_1)
         val capacity = Input.isInt()
 
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_2)//창문 필요 여부 입력
-        val window = when (Input.isInt()) {
+        //창문 필요 여부 입력
+        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_2)
+        val needWindow = when (Input.isInt()) {
             1 -> true
             else -> false
         }
 
-        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_3)//포토 부스 필요 여부 입력
-        val photoBooth = when (Input.isInt()) {
+        //포토 부스 필요 여부 입력
+        View.prettyPrintConsole(Strings.STEP_1_1_MESSAGE_3)
+        val needPhotoBooth = when (Input.isInt()) {
             1 -> true
             else -> false
         }
@@ -81,14 +91,18 @@ class OfficeManager {
 
         val result = StringBuilder()
         MeetingRoom.entries.forEach { room ->
-            getAvailableRoomInfo(room, capacity, window, photoBooth)?.let { formattedRoomInfo ->
-                result.append(formattedRoomInfo).append("\n") // getAvailableRoomInfo 함수를 통해 조건에 해당하는 회의실 정보를 result에 추가
+            // getAvailableRoomInfo 함수를 통해 조건에 해당하는 회의실 정보를 result에 추가
+            getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)?.let { formattedRoomInfo ->
+                result.append(formattedRoomInfo).append(Strings.NEW_LINE)
             }
         }
         return if (result.isEmpty()) {
-            Strings.STEP_1_1_NO_ROOM_FOUND // 조건에 해당하는 회의실이 없을 경우 보여줄 메시지
+            // 조건에 해당하는 회의실이 없을 경우 보여줄 메시지
+            Strings.STEP_1_1_NO_ROOM_FOUND
         } else {
-            result.toString().trim() // 해당하는 조건의 회의실들을 return해줌
+            // 해당하는 조건의 회의실들을 return해 줌
+            //trim()으로 result에 마지막으로 append한 Strings.NEW_LINE을 제거
+            result.toString().trim()
         }
     }
 
@@ -101,12 +115,14 @@ class OfficeManager {
     private fun getAvailableRoomInfo(
         room: MeetingRoom,
         capacity: Int,
-        window: Boolean,
-        photoBooth: Boolean
-    ): String? { //window와 photoBooth가 false여도 true에 해당하는 회의실을 반환함과 동시에 window나 photoBooth가 true인 경우에는 true인 것만 반환하도록 하는 조건식
-        if (capacity <= room.maxCapacity && (!window || room.hasWindow) && (!photoBooth || room.hasPhotoBooth)) {
-            val windowInfo = if (room.hasWindow) "있음" else "없음"
-            val photoBoothInfo = if (room.hasPhotoBooth) "있음" else "없음"
+        needWindow: Boolean,
+        needPhotoBooth: Boolean
+    ): String? {
+        //window와 photoBooth가 false여도 true에 해당하는 회의실을 반환함과 동시에
+        // window나 photoBooth가 true인 경우에는 true인 것만 반환하도록 하는 조건식
+        if (capacity <= room.maxCapacity && (!needWindow || room.hasWindow) && (!needPhotoBooth || room.hasPhotoBooth)) {
+            val windowInfo = if (room.hasWindow) Strings.YES_MESSAGE else Strings.NO_MESSAGE
+            val photoBoothInfo = if (room.hasPhotoBooth) Strings.YES_MESSAGE else Strings.NO_MESSAGE
 
             return String.format(
                 Strings.STEP_1_1_ROOM_INFO,

@@ -3,6 +3,9 @@ package com.sesac.officeroom.view
 object Strings {
     const val ERROR_MESSAGE = "잘못된 값입니다. 다시 입력해주세요."
     const val MAIN_MESSAGE = "[1]회의실 관리 [2]매출 관리 [0]종료"
+    const val NEW_LINE = "\n"
+    const val YES_MESSAGE = "있음"
+    const val NO_MESSAGE = "없음"
 
     // 회의실 관리
     const val STEP_1_MENU_MESSAGE = "[1]회의실 예약하기 [2]회의실 정보 확인 [3]회의실 예약 내역 조회\n[0]메인 메뉴로 돌아가기"
