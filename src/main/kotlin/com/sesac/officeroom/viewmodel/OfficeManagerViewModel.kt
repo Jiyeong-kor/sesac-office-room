@@ -25,4 +25,5 @@ class OfficeManagerViewModel(
     suspend fun makeReservation(reservationDTO: ReservationDTO) {
         officeManagerRepository.makeReservation(reservationDTO)
     }
+
 }

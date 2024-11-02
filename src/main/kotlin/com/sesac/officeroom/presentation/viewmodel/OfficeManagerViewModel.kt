@@ -25,4 +25,13 @@ class OfficeManagerViewModel(
     suspend fun makeReservation(reservationDTO: ReservationDTO) {
         officeManagerRepository.makeReservation(reservationDTO)
     }
+
+    /**
+     * 예약 불러오기
+     */
+    suspend fun getReservationList(): List<ReservationDTO> {
+        return withContext(Dispatchers.IO) {
+            officeManagerRepository.getReservationList()
+        }
+    }
 }

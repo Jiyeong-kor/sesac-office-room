@@ -26,6 +26,7 @@ class OfficeManagerView {
                 1 -> manageOfficeRoomProcess()
                 2 -> manageSalesProcess()
                 -1 -> test()
+                -2 -> test2()
                 0 -> break
                 else -> View.prettyPrintConsole(Strings.ERROR_MESSAGE)
             }
@@ -215,6 +216,15 @@ class OfficeManagerView {
                 3 -> {}
                 4 -> {}
                 0 -> break
+            }
+        }
+    }
+    fun test2(){
+        //Reservations.txt에 제대로 데이터가 파싱되었는지 확인하는 함수
+        runBlocking {
+            val reservationList = viewModel.getReservationList()
+            reservationList.listIterator().forEach {
+                println(it)
             }
         }
     }
