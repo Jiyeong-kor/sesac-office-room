@@ -253,4 +253,32 @@ class OfficeManagerView {
             viewModel.makeReservation(tempDTO)
         }
     }
+
+    /**
+     * 새로운 예약의 예약시간과 기존의 예약 시간에 충돌이 있는지 확인하는 함수
+     */
+    suspend fun canMakeReservation(newReservation: ReservationDTO, oldReservations: List<ReservationDTO>): Boolean {
+        //newReservation -> 새롭게 생성하고자 하는 예약
+        //oldReservations -> 예약 목록, 즉 기존의 예약들
+        for (reservation in oldReservations) { //모든 예약을 돌음
+            if (reservation.date == newReservation.date) { //예약 날짜가 같은 경우
+                val oldStart = reservation.reservationTime
+                    //oldStart: 기존 예약의 시작시간
+                val oldEnd = reservation.reservationTime.plusHours(reservation.usageTime.toLong())
+                    //oldEnd: 시작시간에 usageTime을 더하면 기존 예약의 종료시간
+                val newStart = newReservation.reservationTime
+                    //newStart: 새 예약의 시작시간
+                val newEnd = newReservation.reservationTime.plusHours(newReservation.usageTime.toLong())
+                    //newEnd: 새 예약의 종료시간
+                if (!(newEnd.isBefore(oldStart) || newStart.isAfter(oldEnd))) {
+                    //첫번째 조건은 새 예약이 끝나는 시간이 기존 예약의 시작 시간 이전인 경우 무조건 예약이 가능함
+                    //두번째 조건은 새 예약이 시작되는 시간이 기존 예약의 종료 시간보다 이후인 경우 무조건 예약이 가능함
+                    //두 조건의이 하나라도 걸리면 무조건 예약이 가능하므로, 이 두 조건을 OR 한 것의 NOT을 하면 예약이 겹치는 경우가 됨,
+                    // 따라서 이 때 false
+                    return false
+                }
+            }
+        }
+        return true //반복문을 돌면서 조건에 아무것도 걸리지 않았으므로 true가 리턴됨
+    }
 }
