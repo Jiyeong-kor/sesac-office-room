@@ -17,6 +17,7 @@ object Strings {
     const val STEP_1_1_ROOM_INFO = "%d. [%s]: 기준 인원 %d명, 최대 인원 %d명, 기본 요금 %d원, 인당 추가 요금 %d원, 창문 %s, 포토부스 %s"
     const val STEP_1_1_NO_ROOM_FOUND = "해당하는 회의실이 없습니다."
     const val STEP_1_1_ROOM_CHOOSE = "예약을 원하는 회의실 번호를 입력해주세요."
+    const val STEP_1_1_USAGE_TIME_CHOOSE = "희망 이용 시간을 입력해주세요."
 
     const val STEP_1_2_MESSAGE = "[1]회의실 목록 조회 [2]회의실 별 예약현황 조회 [0]메뉴로 돌아가기"
 

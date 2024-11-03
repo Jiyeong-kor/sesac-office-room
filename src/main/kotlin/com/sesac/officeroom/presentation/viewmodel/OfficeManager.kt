@@ -1,6 +1,6 @@
 package com.sesac.officeroom.presentation.viewmodel
 
-import com.sesac.officeroom.data.MeetingRoom
+import com.sesac.officeroom.data.officeList
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
@@ -90,8 +90,8 @@ class OfficeManager {
             else -> false
         }
         //TODO: 입력 잘못 받았을 경우 예외처리 해주기
-        //mapNotNull은 MeetingRooms.entries를 돌면서 getAvailableRoomInfo 함수의 반환값이 null이 아닌 경우에만 처리함
-        val result = MeetingRoom.entries.mapNotNull { room ->
+        //mapNotNull은 officeList.entries를 돌면서 getAvailableRoomInfo 함수의 반환값이 null이 아닌 경우에만 처리함
+        val result = officeList.entries.mapNotNull { room ->
             getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)
         //필터링 된 회의실들을 받아서 줄 단위로 연결함
         }.joinToString(separator = Strings.NEW_LINE)
@@ -111,7 +111,7 @@ class OfficeManager {
      */
 
     private fun getAvailableRoomInfo(
-        room: MeetingRoom,
+        room: officeList,
         capacity: Int,
         needWindow: Boolean,
         needPhotoBooth: Boolean
