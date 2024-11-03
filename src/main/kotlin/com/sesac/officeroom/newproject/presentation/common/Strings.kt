@@ -1,4 +1,4 @@
-package com.sesac.officeroom.presentation.common
+package com.sesac.officeroom.newproject.presentation.common
 
 object Strings {
     const val ERROR_MESSAGE = "잘못된 값입니다. 다시 입력해주세요."

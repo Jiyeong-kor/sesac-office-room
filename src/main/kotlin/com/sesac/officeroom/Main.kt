@@ -1,11 +1,11 @@
 package com.sesac.officeroom
 
-import com.sesac.officeroom.presentation.view.OfficeManagerView
+import com.sesac.officeroom.newproject.presentation.view.MainView
 
 /**
  * Main
  */
 fun main() {
-    val manager = OfficeManagerView()
-    manager.mainProcess()
+    val mainView = MainView()
+    mainView.main()
 }

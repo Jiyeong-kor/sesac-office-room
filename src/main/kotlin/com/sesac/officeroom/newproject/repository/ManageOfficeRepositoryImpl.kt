@@ -1,4 +1,4 @@
-package com.sesac.officeroom.repository
+package com.sesac.officeroom.newproject.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
@@ -11,7 +11,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
+class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
 
     /**
      * 사무실 목록 불러오기

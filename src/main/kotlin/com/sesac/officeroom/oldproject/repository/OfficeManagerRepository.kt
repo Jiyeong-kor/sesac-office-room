@@ -1,4 +1,4 @@
-package com.sesac.officeroom.repository
+package com.sesac.officeroom.oldproject.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO

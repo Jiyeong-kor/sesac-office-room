@@ -1,43 +1,28 @@
-package com.sesac.officeroom.presentation.viewmodel
+package com.sesac.officeroom.newproject.presentation.view
 
 import com.sesac.officeroom.data.MeetingRoom
-import com.sesac.officeroom.presentation.common.Input
-import com.sesac.officeroom.presentation.common.Strings
-import com.sesac.officeroom.presentation.common.View
-
+import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.newproject.presentation.viewmodel.ManageOfficeViewModel
+import com.sesac.officeroom.newproject.repository.ManageOfficeRepositoryImpl
+import com.sesac.officeroom.oldproject.presentation.common.Input
+import com.sesac.officeroom.oldproject.presentation.common.Strings
+import com.sesac.officeroom.oldproject.presentation.common.View
+import kotlinx.coroutines.runBlocking
+import java.time.LocalDate
+import java.time.LocalTime
 
 /**
- * Office manager
+ * 메인 > [1]회의실 관리
  *
+ * desc: 회의실 관리 process
  */
-class OfficeManager {
+class ManageOfficeView {
+    val viewModel = ManageOfficeViewModel(ManageOfficeRepositoryImpl())
 
-    /**
-     * 메인 process
-     */
-    fun mainProcess() {
-        while (true) {
-            View.prettyPrintConsole(Strings.MAIN_MESSAGE)
-
-            when (Input.isInt()) {
-                1 -> manageOfficeRoomProcess()
-                2 -> manageSalesProcess()
-                0 -> break
-                else -> View.prettyPrintConsole(Strings.ERROR_MESSAGE)
-            }
-        }
-    }
-
-    /**
-     * 메인 > [1]회의실 관리
-     *
-     * desc: 회의실 관리 process
-     */
-    private fun manageOfficeRoomProcess() {
+    fun main() {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_1_MENU_MESSAGE)
-
-            when (Input.isInt()) {
+            when(Input.isInt()) {
                 1 -> roomReservationProcess()
                 2 -> officeRoomInfoProcess()
                 3 -> reservationInfoProcess()
@@ -54,15 +39,35 @@ class OfficeManager {
     private fun roomReservationProcess() {
 
         //예약이 가능한 회의실을 보여줌
-        View.prettyPrintConsole(showAvailableRooms()
+        View.prettyPrintConsole(
+            showAvailableRooms()
 
-                + Strings.NEW_LINE
+                    + Strings.NEW_LINE
 
-                //예약을 원하는 회의실 번호를 입력하라는 메시지
-                + Strings.STEP_1_1_ROOM_CHOOSE)
+                    //예약을 원하는 회의실 번호를 입력하라는 메시지
+                    + Strings.STEP_1_1_ROOM_CHOOSE
+        )
 
         //예약 받은 회의실 번호를 roomNumber에 담음
-        val roomNumber = Input.isInt()     }
+        val roomNumber = Input.isInt()
+
+
+        // 저장 예제 참고
+        /*runBlocking {
+            val date = LocalDate.of(2024, 11, 1)
+            val time = LocalTime.of(9, 0)
+            val tempDTO = ReservationDTO(
+                1,
+                date,
+                time,
+                1,
+                4,
+                "01077300328"
+            )
+            viewModel.makeReservation(tempDTO)
+        }*/
+
+    }
 
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
@@ -89,12 +94,26 @@ class OfficeManager {
             1 -> true
             else -> false
         }
+
         //TODO: 입력 잘못 받았을 경우 예외처리 해주기
         //mapNotNull은 MeetingRooms.entries를 돌면서 getAvailableRoomInfo 함수의 반환값이 null이 아닌 경우에만 처리함
+
+        // 사무실 목록 불러오기
+        /*runBlocking {
+            val officeList = viewModel.getOfficeList()
+
+            // TODO: MeetingRoom 을 officeList 로 바꿔주기
+            val result = MeetingRoom.entries.mapNotNull { room ->
+                getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)
+                //필터링 된 회의실들을 받아서 줄 단위로 연결함
+            }.joinToString(separator = Strings.NEW_LINE)
+        }*/
+
         val result = MeetingRoom.entries.mapNotNull { room ->
             getAvailableRoomInfo(room, capacity, needWindow, needPhotoBooth)
-        //필터링 된 회의실들을 받아서 줄 단위로 연결함
+            //필터링 된 회의실들을 받아서 줄 단위로 연결함
         }.joinToString(separator = Strings.NEW_LINE)
+
         return if (result.isEmpty()) {
             // 조건에 해당하는 회의실이 없을 경우 보여줄 메시지
             Strings.STEP_1_1_NO_ROOM_FOUND
@@ -146,7 +165,7 @@ class OfficeManager {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_1_2_MESSAGE)
 
-            when (Input.isInt()) {
+            when(Input.isInt()) {
                 1 -> {}
                 2 -> {}
                 0 -> break
@@ -163,21 +182,38 @@ class OfficeManager {
         View.prettyPrintConsole(Strings.STEP_1_3_MESSAGE)
     }
 
-    /**
-     * 메인 > [2]매출 관리
-     *
-     * desc: 매출 관리 process
-     */
-    private fun manageSalesProcess() {
-        while (true) {
-            View.prettyPrintConsole(Strings.STEP_2_MENU_MESSAGE)
 
-            when (Input.isInt()) {
-                1 -> {}
-                2 -> {}
-                3 -> {}
-                4 -> {}
-                0 -> break
+    fun test() {
+        // office 목록 불러오기
+        runBlocking {
+            val officeList = viewModel.getOfficeList()
+            officeList.listIterator().forEach {
+                println(it)
+            }
+        }
+
+        // 예약 데이터 저장
+        runBlocking {
+            val date = LocalDate.of(2024, 11, 1)
+            val time = LocalTime.of(9, 0)
+            val tempDTO = ReservationDTO(
+                1,
+                date,
+                time,
+                1,
+                4,
+                "01077300328"
+            )
+            viewModel.makeReservation(tempDTO)
+        }
+    }
+
+    fun test2(){
+        //Reservations.txt에 제대로 데이터가 파싱되었는지 확인하는 함수
+        runBlocking {
+            val reservationList = viewModel.getReservationList()
+            reservationList.listIterator().forEach {
+                println(it)
             }
         }
     }
