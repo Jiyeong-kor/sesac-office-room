@@ -7,8 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileWriter
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
-class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
+class OfficeManagerRepositoryImpl : OfficeManagerRepository {
 
     /**
      * 사무실 목록 불러오기
@@ -58,5 +61,28 @@ class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
                 close()
             }
         }
+    }
+    /**
+     * 예약 목록 불러오기
+     * writer: 전지환
+     */
+    override suspend fun getReservationList(): List<ReservationDTO> {
+        val reservationData = mutableListOf<ReservationDTO>()
+        val file = File("Reservation.txt")
+        file.forEachLine { line ->
+            val data = line.split(",")
+            if (data.size == 6) {
+                val reservationDataDTO = ReservationDTO(
+                    officeId = data[0].toInt(),
+                    date = LocalDate.parse(data[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")), //date가 LocalDate 타입이므로, 스트링으로 저장된 data[1]을 파싱함
+                    reservationTime = LocalTime.parse(data[2], DateTimeFormatter.ofPattern("HH:mm")), //마찬가지로 reservationTime은 LocalTime 타입임
+                    usageTime = data[3].toInt(),
+                    numberOfPeople = data[4].toInt(),
+                    phoneNumber = data[5]
+                )
+                reservationData.add(reservationDataDTO)
+            }
+        }
+        return reservationData
     }
 }

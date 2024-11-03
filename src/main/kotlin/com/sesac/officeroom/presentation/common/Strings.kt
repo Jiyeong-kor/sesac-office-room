@@ -17,11 +17,18 @@ object Strings {
     const val STEP_1_1_ROOM_INFO = "%d. [%s]: 기준 인원 %d명, 최대 인원 %d명, 기본 요금 %d원, 인당 추가 요금 %d원, 창문 %s, 포토부스 %s"
     const val STEP_1_1_NO_ROOM_FOUND = "해당하는 회의실이 없습니다."
     const val STEP_1_1_ROOM_CHOOSE = "예약을 원하는 회의실 번호를 입력해주세요."
+    const val STEP_1_1_USAGE_DATE_CHOOSE = "예약을 원하는 날짜를 입력해주세요."
     const val STEP_1_1_USAGE_TIME_CHOOSE = "희망 이용 시간을 입력해주세요."
+    const val STEP_1_1_AVAILABLE_TIMES_MESSAGE = "예약 가능한 시간대: %s"
+    const val STEP_1_1_START_TIME_CHOOSE = "이용 시작 시간을 입력해주세요"
 
     const val STEP_1_2_MESSAGE = "[1]회의실 목록 조회 [2]회의실 별 예약현황 조회 [0]메뉴로 돌아가기"
 
     const val STEP_1_3_MESSAGE = "하이픈(-)을 제외한 예약자의 휴대폰번호를 입력해주세요."
+    const val STEP_1_3_NO_NUMBER_FOUND = "해당 전화번호로 예약된 내역이 없습니다."
+    const val STEP_1_3_NUMBER_FOUND = "해당 전화번호로 예약된 내역"
+    const val STEP_1_3_RESERVATION_INFO_FORMAT = "%d번 회의실, 예약 날짜: %s, 예약 시간: %s, 이용 시간: %d시간, 인원: %d"
+
     const val STEP_1_3_MENU_MESSAGE = "[1]예약취소 [2]공유하기 [0]메뉴로 돌아가기"
 
     // 매출 관리
