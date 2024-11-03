@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 class ManageOfficeViewModel(
     private val manageOfficeRepository: ManageOfficeRepository
 ) {
-
     /**
      * 사무실 목록 불러오기
      */
@@ -43,7 +42,7 @@ class ManageOfficeViewModel(
         //newReservation -> 새롭게 생성하고자 하는 예약
         //oldReservations -> 예약 목록, 즉 기존의 예약들
         for (reservation in oldReservations) { //모든 예약을 돌음
-            if (reservation.date == newReservation.date) { //예약 날짜가 같은 경우
+            if ((reservation.date == newReservation.date) && (reservation.officeId == newReservation.officeId)) { //예약 날짜와 예약 회의실이 모두 같은 경우에만
                 val oldStart = reservation.reservationTime
                 //oldStart: 기존 예약의 시작시간
                 val oldEnd = reservation.reservationTime.plusHours(reservation.usageTime.toLong())
