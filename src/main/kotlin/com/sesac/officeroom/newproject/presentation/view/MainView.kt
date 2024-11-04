@@ -9,7 +9,7 @@ import com.sesac.officeroom.oldproject.presentation.common.View
  */
 class MainView {
 
-    suspend fun main() {
+    fun main() {
         while (true) {
             View.prettyPrintConsole(Strings.MAIN_MESSAGE)
 

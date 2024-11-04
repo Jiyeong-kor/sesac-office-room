@@ -5,7 +5,7 @@ import com.sesac.officeroom.newproject.presentation.view.MainView
 /**
  * Main
  */
-suspend fun main() {
+fun main() {
     val mainView = MainView()
     mainView.main()
 }
