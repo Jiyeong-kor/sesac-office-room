@@ -2,43 +2,24 @@ package com.sesac.officeroom.presentation.view
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.presentation.viewmodel.ManageOfficeViewModel
+import com.sesac.officeroom.repository.ManageOfficeRepositoryImpl
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
-import com.sesac.officeroom.presentation.viewmodel.OfficeManagerViewModel
-import com.sesac.officeroom.repository.OfficeManagerRepositoryImpl
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalTime
 
+/**
+ * 메인 > [1]회의실 관리
+ *
+ * desc: 회의실 관리 process
+ */
+class ManageOfficeView {
+    private val viewModel = ManageOfficeViewModel(ManageOfficeRepositoryImpl())
 
-class OfficeManagerView {
-    private val viewModel = OfficeManagerViewModel(OfficeManagerRepositoryImpl())
-
-    /**
-     * 메인 process
-     */
-    fun mainProcess() {
-        while (true) {
-            View.prettyPrintConsole(Strings.MAIN_MESSAGE)
-
-            when(Input.isInt()) {
-                1 -> manageOfficeRoomProcess()
-                2 -> manageSalesProcess()
-                -1 -> test()
-                -2 -> test2()
-                0 -> break
-                else -> View.prettyPrintConsole(Strings.ERROR_MESSAGE)
-            }
-        }
-    }
-
-    /**
-     * 메인 > [1]회의실 관리
-     *
-     * desc: 회의실 관리 process
-     */
-    private fun manageOfficeRoomProcess() {
+    fun main() {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_1_MENU_MESSAGE)
             when(Input.isInt()) {
@@ -49,6 +30,7 @@ class OfficeManagerView {
             }
         }
     }
+
 
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
@@ -91,6 +73,7 @@ class OfficeManagerView {
             )
         }
     }
+
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
      *
@@ -103,12 +86,12 @@ class OfficeManagerView {
      */
     private fun getAvailableTimesForDate(officeId: Int, date: LocalDate): List<Int> {
 
-            //기존 예약 목록에서 특정 회의실 ID와 날짜에 해당하는 목록을 가져옴
-            val reservations = runBlocking{
-                viewModel.getReservationList().filter { it.officeId == officeId && it.date == date }
-            }
-            //예약 가능한 시간을 저장할 리스트 생성
-            val availableTimes = mutableListOf<Int>()
+        //기존 예약 목록에서 특정 회의실 ID와 날짜에 해당하는 목록을 가져옴
+        val reservations = runBlocking{
+            viewModel.getReservationList().filter { it.officeId == officeId && it.date == date }
+        }
+        //예약 가능한 시간을 저장할 리스트 생성
+        val availableTimes = mutableListOf<Int>()
 
         //9시부터 18시까지 새로운 예약 객체 생성
         for (hour in 9..17) {
@@ -170,6 +153,7 @@ class OfficeManagerView {
             return true
         }
     }
+
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
      *
@@ -205,6 +189,7 @@ class OfficeManagerView {
         // result와 capacity를 Pair로 반환
         return Pair(result, capacity)
     }
+
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
      *
@@ -248,10 +233,62 @@ class OfficeManagerView {
             View.prettyPrintConsole(Strings.STEP_1_2_MESSAGE)
 
             when(Input.isInt()) {
-                1 -> {}
-                2 -> {}
+                1 -> getOfficeList()
+                2 -> getReservationStatus()
                 0 -> break
             }
+        }
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [2]회의실 정보 확인 > [1]회의실 목록 조회
+     *
+     * desc: 회의실 목록 조회
+     * writer: 박혜선
+     */
+    private fun getOfficeList() {
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [2]회의실 정보 확인 > [2]회의실 별 예약현황 조회
+     *
+     * desc: 회의실 별 예약현황 조회
+     * writer: 박혜선
+     */
+    private fun getReservationStatus() {
+        runBlocking {
+            // 회의실 목록 안내
+            View.prettyPrintConsole(getOfficeListToString())
+
+            val officeId = Input.isInt()
+            val reservationList = viewModel.getReservationStatusByOffice(officeId)
+
+            when (reservationList.size) {
+                0 -> View.prettyPrintConsole(Strings.STEP_1_2_2_NO_RESERVATION_MESSAGE)
+                else -> View.createSchedule(reservationList)
+            }
+        }
+    }
+
+    /**
+     * 회의실 목록 조회 (형식: id.name)
+     *
+     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
+     * writer: 박혜선
+     */
+    private fun getOfficeListToString() : String {
+        return runBlocking {
+            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
+            val officeList = viewModel.getOfficeList().listIterator()
+            officeList.forEach {
+                builder.append(
+                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
+
+                // 다음 데이터가 있는 경우 줄바꿈 추가
+                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
+            }
+
+            builder.toString()
         }
     }
 
@@ -290,26 +327,9 @@ class OfficeManagerView {
         }
     }
 
-    /**
-     * 메인 > [2]매출 관리
-     *
-     * desc: 매출 관리 process
-     */
-    private fun manageSalesProcess() {
-        while (true) {
-            View.prettyPrintConsole(Strings.STEP_2_MENU_MESSAGE)
 
-            when(Input.isInt()) {
-                1 -> {}
-                2 -> {}
-                3 -> {}
-                4 -> {}
-                0 -> break
-            }
-        }
-    }
 
-    private fun test() {
+    fun test() {
         // office 목록 불러오기
         runBlocking {
             val officeList = viewModel.getOfficeList()
@@ -333,10 +353,8 @@ class OfficeManagerView {
             viewModel.makeReservation(tempDTO)
         }
     }
-    /**
-     * writer: 전지환
-     */
-    private fun test2(){
+
+    fun test2(){
         //Reservations.txt에 제대로 데이터가 파싱되었는지 확인하는 함수
         runBlocking {
             val reservationList = viewModel.getReservationList()

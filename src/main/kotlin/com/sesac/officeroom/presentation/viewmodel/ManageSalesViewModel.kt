@@ -1,11 +1,11 @@
-package com.sesac.officeroom.newproject.presentation.viewmodel
+package com.sesac.officeroom.presentation.viewmodel
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
-import com.sesac.officeroom.newproject.presentation.common.Input
-import com.sesac.officeroom.newproject.presentation.common.Strings
-import com.sesac.officeroom.newproject.presentation.common.View
-import com.sesac.officeroom.newproject.repository.ManageOfficeRepository
+import com.sesac.officeroom.presentation.common.Input
+import com.sesac.officeroom.presentation.common.Strings
+import com.sesac.officeroom.presentation.common.View
+import com.sesac.officeroom.repository.ManageOfficeRepository
 import java.lang.Exception
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
  * writer: 전지환
  */
 
-class ManageSalesViewModel(private val repository:ManageOfficeRepository) {
+class ManageSalesViewModel(private val repository: ManageOfficeRepository) {
     /**
      * office 정보를 가져오는 함수
      */

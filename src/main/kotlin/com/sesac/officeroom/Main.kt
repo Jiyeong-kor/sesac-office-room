@@ -1,6 +1,6 @@
 package com.sesac.officeroom
 
-import com.sesac.officeroom.newproject.presentation.view.MainView
+import com.sesac.officeroom.presentation.view.MainView
 
 /**
  * Main

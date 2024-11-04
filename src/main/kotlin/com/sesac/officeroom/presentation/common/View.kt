@@ -1,5 +1,6 @@
-package com.sesac.officeroom.newproject.presentation.common
+package com.sesac.officeroom.presentation.common
 
+import com.sesac.officeroom.data.ReservationDTO
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
@@ -46,6 +47,42 @@ object View {
             print("─")
         }
         println("┘")
+    }
+
+    /**
+     * 예약 데이터를 시간표 형태로 변환
+     */
+    fun createSchedule(reservations: List<ReservationDTO>) {
+        // 날짜별 시간표를 저장할 맵 (날짜 -> 시간대별 상태)
+        val scheduleMap = mutableMapOf<LocalDate, MutableMap<Int, String>>()
+
+        // 시간대 초기화 (9시 ~ 18시)
+        val hours = (9..18).associateWith { "□" }  // 예약 없음을 "□"로 표시
+
+        // 각 예약 데이터를 시간표에 반영
+        reservations.forEach { reservation ->
+            val date = reservation.date
+            val startHour = reservation.reservationTime.hour
+            val endHour = startHour + reservation.usageTime - 1
+
+            // 해당 날짜의 시간대를 복사하여 가져오기 (없으면 새로 생성)
+            val dailySchedule = scheduleMap.getOrPut(date) { hours.toMutableMap() }
+
+            // 예약 시간대에 "▣"로 표시
+            for (hour in startHour..endHour) {
+                dailySchedule[hour] = "▣"
+            }
+        }
+
+        // 시간표 출력
+        println("┌───────────────────────────────────────────┐")
+        println("   날짜 \\ 시간  " + (9..18).joinToString(" ") { it.toString().padStart(2) })
+
+        scheduleMap.iterator().forEach { (date, dailySchedule) ->
+            val row = (9..18).joinToString("  ") { hour -> dailySchedule[hour] ?: "□" }
+            println("  $date   $row")
+        }
+        println("└───────────────────────────────────────────┘")
     }
 
     /**

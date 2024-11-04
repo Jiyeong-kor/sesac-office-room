@@ -1,4 +1,4 @@
-package com.sesac.officeroom.newproject.repository
+package com.sesac.officeroom.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
@@ -19,7 +19,7 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
     override suspend fun getOfficeList(): List<OfficeDTO> {
         val officeRooms = mutableListOf<OfficeDTO>()
         val file =
-            File("Office.txt")
+            File("/Users/hyeseon/KotlinPractice/SeSACOfficeRoom/src/main/kotlin/com/sesac/officeroom/data/Office.txt")
 
         file.forEachLine { line ->
             val data = line.split(",")

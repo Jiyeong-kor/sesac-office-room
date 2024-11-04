@@ -1,12 +1,12 @@
-package com.sesac.officeroom.newproject.presentation.view
+package com.sesac.officeroom.presentation.view
 
-import com.sesac.officeroom.newproject.presentation.viewmodel.ManageOfficeViewModel
-import com.sesac.officeroom.newproject.repository.ManageOfficeRepositoryImpl
-import com.sesac.officeroom.newproject.presentation.common.Input
-import com.sesac.officeroom.newproject.presentation.common.Strings
-import com.sesac.officeroom.newproject.presentation.common.View
-import com.sesac.officeroom.newproject.presentation.viewmodel.ManageSalesViewModel
-import com.sesac.officeroom.newproject.repository.ManageOfficeRepository
+import com.sesac.officeroom.presentation.viewmodel.ManageOfficeViewModel
+import com.sesac.officeroom.repository.ManageOfficeRepositoryImpl
+import com.sesac.officeroom.presentation.common.Input
+import com.sesac.officeroom.presentation.common.Strings
+import com.sesac.officeroom.presentation.common.View
+import com.sesac.officeroom.presentation.viewmodel.ManageSalesViewModel
+import com.sesac.officeroom.repository.ManageOfficeRepository
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

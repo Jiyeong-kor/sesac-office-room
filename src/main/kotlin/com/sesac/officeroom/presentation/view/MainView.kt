@@ -1,4 +1,4 @@
-package com.sesac.officeroom.newproject.presentation.view
+package com.sesac.officeroom.presentation.view
 
 import com.sesac.officeroom.oldproject.presentation.common.Input
 import com.sesac.officeroom.oldproject.presentation.common.Strings

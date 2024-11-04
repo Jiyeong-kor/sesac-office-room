@@ -1,8 +1,8 @@
-package com.sesac.officeroom.newproject.presentation.viewmodel
+package com.sesac.officeroom.presentation.viewmodel
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
-import com.sesac.officeroom.newproject.repository.ManageOfficeRepository
+import com.sesac.officeroom.repository.ManageOfficeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
