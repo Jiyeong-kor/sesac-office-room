@@ -33,6 +33,7 @@ object Strings {
     const val STEP_2_3_ERROR = "잘못된 날짜 형식입니다."
     const val STEP_2_4_MESSAGE = "현재까지의 총 이용자 수는 %d명 입니다."
     const val ROOMS_INDEX = "회의실 목록:\n"
+    const val ROOMS_NAME = "%d. %s"
 
 
 }
