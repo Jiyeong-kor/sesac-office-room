@@ -1,15 +1,11 @@
 package com.sesac.officeroom.presentation.view
 
-import com.sesac.officeroom.presentation.viewmodel.ManageOfficeViewModel
-import com.sesac.officeroom.repository.ManageOfficeRepositoryImpl
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
 import com.sesac.officeroom.presentation.viewmodel.ManageSalesViewModel
-import com.sesac.officeroom.repository.ManageOfficeRepository
+import com.sesac.officeroom.repository.ManageOfficeRepositoryImpl
 import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 /**
  * 메인 > [2]매출 관리

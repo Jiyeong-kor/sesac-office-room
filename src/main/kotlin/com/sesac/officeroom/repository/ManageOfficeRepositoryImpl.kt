@@ -19,7 +19,7 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
     override suspend fun getOfficeList(): List<OfficeDTO> {
         val officeRooms = mutableListOf<OfficeDTO>()
         val file =
-            File("/Users/hyeseon/KotlinPractice/SeSACOfficeRoom/src/main/kotlin/com/sesac/officeroom/data/Office.txt")
+            File("Office.txt")
 
         file.forEachLine { line ->
             val data = line.split(",")
