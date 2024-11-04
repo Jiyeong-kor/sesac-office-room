@@ -19,6 +19,9 @@ import java.time.LocalTime
 class ManageOfficeView {
     private val viewModel = ManageOfficeViewModel(ManageOfficeRepositoryImpl())
 
+    // boolean 값을 string 값으로 변환
+    val booleanToString: (bool: Boolean) -> String = { bool -> if(bool) Strings.YES else Strings.NO  }
+
     fun main() {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_1_MENU_MESSAGE)
@@ -202,23 +205,12 @@ class ManageOfficeView {
         needWindow: Boolean,
         needFilmBooth: Boolean
     ): String? {
-        //window와 filmBooth가 false여도 true에 해당하는 회의실을 반환함과 동시에
+        // window와 filmBooth가 false여도 true에 해당하는 회의실을 반환함과 동시에
         // window나 filmBooth가 true인 경우에는 true인 것만 반환하도록 하는 조건식
-        if (capacity <= room.maxCapacity && (!needWindow || room.hasWindow) && (!needFilmBooth || room.hasFilmBooth)) {
-            val windowInfo = if (room.hasWindow) Strings.YES_MESSAGE else Strings.NO_MESSAGE
-            val filmBoothInfo = if (room.hasFilmBooth) Strings.YES_MESSAGE else Strings.NO_MESSAGE
-
-            return String.format(
-                Strings.STEP_1_1_ROOM_INFO,
-                room.id,
-                room.name,
-                room.baseCapacity,
-                room.maxCapacity,
-                room.baseCostPerHour,
-                room.additionalCostPerPerson,
-                windowInfo,
-                filmBoothInfo
-            )
+        with(room) {
+            if (capacity <= maxCapacity && (!needWindow || hasWindow) && (!needFilmBooth || hasFilmBooth)) {
+                return getOfficeItemToString(this)
+            }
         }
         return null
     }
@@ -247,6 +239,12 @@ class ManageOfficeView {
      * writer: 박혜선
      */
     private fun getOfficeList() {
+        runBlocking {
+            val officeList = viewModel.getOfficeList()
+            officeList.listIterator().forEach { officeItem ->
+                println(getOfficeItemToString(officeItem))
+            }
+        }
     }
 
     /**
@@ -267,28 +265,6 @@ class ManageOfficeView {
                 0 -> View.prettyPrintConsole(Strings.STEP_1_2_2_NO_RESERVATION_MESSAGE)
                 else -> View.createSchedule(reservationList)
             }
-        }
-    }
-
-    /**
-     * 회의실 목록 조회 (형식: id.name)
-     *
-     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
-     * writer: 박혜선
-     */
-    private fun getOfficeListToString() : String {
-        return runBlocking {
-            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
-            val officeList = viewModel.getOfficeList().listIterator()
-            officeList.forEach {
-                builder.append(
-                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
-
-                // 다음 데이터가 있는 경우 줄바꿈 추가
-                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
-            }
-
-            builder.toString()
         }
     }
 
@@ -327,6 +303,41 @@ class ManageOfficeView {
         }
     }
 
+    /**
+     * 회의실 목록 조회 (형식: id.name)
+     *
+     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
+     * writer: 박혜선
+     */
+    private fun getOfficeListToString() : String {
+        return runBlocking {
+            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
+            val officeList = viewModel.getOfficeList().listIterator()
+            officeList.forEach {
+                builder.append(
+                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
+
+                // 다음 데이터가 있는 경우 줄바꿈 추가
+                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
+            }
+
+            builder.toString()
+        }
+    }
+
+    /**
+     * Office item을 String 형식으로 변환
+     * 형식: (id. name: 기준 인원 n명, 최대 인원 n명, 기본 요금 n원, 인당 추가 요금 n원, 창문 있음/없음, 포토부스 있음/없음)
+     *
+     * writer: 박혜선
+     */
+    private fun getOfficeItemToString(officeItem: OfficeDTO): String {
+        return with(officeItem) {
+            String.format(Strings.STEP_1_1_ROOM_INFO,
+                id, name, baseCapacity, maxCapacity, baseCostPerHour, additionalCostPerPerson,
+                booleanToString(hasWindow), booleanToString(hasFilmBooth))
+        }
+    }
 
 
     fun test() {
