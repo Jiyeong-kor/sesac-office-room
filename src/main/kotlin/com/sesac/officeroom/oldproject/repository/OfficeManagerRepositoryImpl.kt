@@ -1,4 +1,4 @@
-package com.sesac.officeroom.oldproject.repository
+package com.sesac.officeroom.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
@@ -11,15 +11,14 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
+class OfficeManagerRepositoryImpl : OfficeManagerRepository {
 
     /**
      * 사무실 목록 불러오기
      */
     override suspend fun getOfficeList(): List<OfficeDTO> {
         val officeRooms = mutableListOf<OfficeDTO>()
-        val file =
-            File("Office.txt")
+        val file = File("Office.txt")
 
         file.forEachLine { line ->
             val data = line.split(",")
@@ -45,7 +44,7 @@ class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
      * 예약하기: 예약 목록 추가
      */
     override suspend fun makeReservation(reservationDTO: ReservationDTO) {
-        val file = File("Reservations.txt")
+        val file = File("Reservation.txt")
         if (!file.exists()) {
             withContext(Dispatchers.IO) {
                 file.createNewFile()
@@ -63,13 +62,13 @@ class OfficeManagerRepositoryImpl(): OfficeManagerRepository {
             }
         }
     }
-
     /**
      * 예약 목록 불러오기
+     * writer: 전지환
      */
     override suspend fun getReservationList(): List<ReservationDTO> {
         val reservationData = mutableListOf<ReservationDTO>()
-        val file = File("Reservations.txt")
+        val file = File("Reservation.txt")
         file.forEachLine { line ->
             val data = line.split(",")
             if (data.size == 6) {

@@ -50,14 +50,20 @@ object View {
 
     /**
      * showDates()함수: 현재 날짜를 포함하여 7일을 보여주는 함수
+     * writer: 전지환
+     * modifier: 정지영 (dates를 반환)
      */
-    fun showDates(){
+    fun showDates(): MutableList<LocalDate> {
         val today = LocalDate.now() //today 는 24-10-30 형식
+        val dates = mutableListOf<LocalDate>()
+
         for (i in 0 until 7){ //i는 0부터 6까지
             val date = today.plusDays(i.toLong()) //오늘을 포함해야 하므로 i가 0부터 시작해야 함
             val dayKor = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN) //요일을 가져와서 '수요일' 처럼 만듦
             println("${i+1}. ${date.format(DateTimeFormatter.ofPattern("MM/dd"))} $dayKor") //1. 10/30 수요일 형식으로 출력
+            dates.add(date)//날짜를 리스트에 추가
         }
+        return dates //날짜리스트 반환
 
     }
 }
