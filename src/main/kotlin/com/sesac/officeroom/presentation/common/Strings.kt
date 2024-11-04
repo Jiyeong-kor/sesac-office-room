@@ -34,6 +34,7 @@ object Strings {
     const val STEP_1_3_RESERVATION_INFO_FORMAT = "%d번 회의실, 예약 날짜: %s, 예약 시간: %s, 이용 시간: %d시간, 인원: %d"
 
     const val STEP_1_3_MENU_MESSAGE = "[1]예약취소 [2]공유하기 [0]메뉴로 돌아가기"
+    const val STEP_1_3_CANCEL_RESERVATION = "예약이 성공적으로 취소되었습니다."
 
     // 매출 관리
     const val STEP_2_MENU_MESSAGE = "[1]총 매출 조회 [2]회의실 별 매출조회 [3]날짜별 매출조회 [4]총 이용자 수 조회\n[0]메인 메뉴로 돌아가기"
@@ -46,6 +47,4 @@ object Strings {
     const val STEP_2_4_MESSAGE = "현재까지의 총 이용자 수는 %d명 입니다."
     const val ROOMS_INDEX = "회의실 목록:\n"
     const val ROOMS_NAME = "%d. %s"
-
-
 }

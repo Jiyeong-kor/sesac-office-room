@@ -28,13 +28,20 @@ object View {
         // 각 줄을 가운데 정렬하여 출력
         for (line in lines) {
             if (line.length > width) {
+
                 // 줄의 길이가 설정한 너비보다 길면 그대로 출력 (혹은 필요에 따라 자를 수 있음)
                 println(line.substring(0, width))
             } else {
                 // 줄의 길이가 너비보다 작으면 가운데 정렬
-                val paddingSize = (width - line.length) / 2 // 각 줄의 앞뒤로 들어갈 공백 계산
-                var paddedLine = " ".repeat(paddingSize.coerceAtLeast(0)) + line // 앞쪽 공백 추가
-                paddedLine += " ".repeat(width - paddedLine.length) // 뒤쪽 공백 추가
+
+                // 각 줄의 앞뒤로 들어갈 공백 계산
+                val paddingSize = (width - line.length) / 2
+
+                // 앞쪽 공백 추가
+                var paddedLine = " ".repeat(paddingSize.coerceAtLeast(0)) + line
+
+                // 뒤쪽 공백 추가
+                paddedLine += " ".repeat(width - paddedLine.length)
 
                 // 가운데 정렬된 줄을 출력
                 print(String.format("%-${width}s%n", paddedLine))
@@ -53,6 +60,7 @@ object View {
      * 예약 데이터를 시간표 형태로 변환
      */
     fun createSchedule(reservations: List<ReservationDTO>) {
+
         // 날짜별 시간표를 저장할 맵 (날짜 -> 시간대별 상태)
         val scheduleMap = mutableMapOf<LocalDate, MutableMap<Int, String>>()
 
@@ -91,16 +99,26 @@ object View {
      * modifier: 정지영 (dates를 반환)
      */
     fun showDates(): MutableList<LocalDate> {
-        val today = LocalDate.now() //today 는 24-10-30 형식
+
+        //today 는 24-10-30 형식
+        val today = LocalDate.now()
         val dates = mutableListOf<LocalDate>()
 
-        for (i in 0 until 7){ //i는 0부터 6까지
-            val date = today.plusDays(i.toLong()) //오늘을 포함해야 하므로 i가 0부터 시작해야 함
-            val dayKor = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN) //요일을 가져와서 '수요일' 처럼 만듦
-            println("${i+1}. ${date.format(DateTimeFormatter.ofPattern("MM/dd"))} $dayKor") //1. 10/30 수요일 형식으로 출력
-            dates.add(date)//날짜를 리스트에 추가
-        }
-        return dates //날짜리스트 반환
+        //i는 0부터 6까지
+        for (i in 0 until 7){
 
+            //오늘을 포함해야 하므로 i가 0부터 시작해야 함
+            val date = today.plusDays(i.toLong())
+
+            //요일을 가져와서 '수요일' 처럼 만듦
+            val dayKor = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREAN)
+
+            //1. 10/30 수요일 형식으로 출력
+            println("${i+1}. ${date.format(DateTimeFormatter.ofPattern("MM/dd"))} $dayKor")
+
+            //날짜를 리스트에 추가
+            dates.add(date)
+        }
+        return dates
     }
 }

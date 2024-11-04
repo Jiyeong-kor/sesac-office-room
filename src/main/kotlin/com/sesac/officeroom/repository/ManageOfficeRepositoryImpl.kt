@@ -46,6 +46,7 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
      */
     override suspend fun makeReservation(reservationDTO: ReservationDTO) {
         val file = File("Reservations.txt")
+
         if (!file.exists()) {
             withContext(Dispatchers.IO) {
                 file.createNewFile()
@@ -75,8 +76,13 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
             if (data.size == 6) {
                 val reservationDataDTO = ReservationDTO(
                     officeId = data[0].toInt(),
-                    date = LocalDate.parse(data[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")), //date가 LocalDate 타입이므로, 스트링으로 저장된 data[1]을 파싱함
-                    reservationTime = LocalTime.parse(data[2], DateTimeFormatter.ofPattern("HH:mm")), //마찬가지로 reservationTime은 LocalTime 타입임
+
+                    //date가 LocalDate 타입이므로, 스트링으로 저장된 data[1]을 파싱함
+                    date = LocalDate.parse(data[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+
+                    //마찬가지로 reservationTime은 LocalTime 타입임
+                    reservationTime = LocalTime.parse(data[2], DateTimeFormatter.ofPattern("HH:mm")),
+
                     usageTime = data[3].toInt(),
                     numberOfPeople = data[4].toInt(),
                     phoneNumber = data[5]
@@ -85,5 +91,25 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
             }
         }
         return reservationData
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [3]회의실 예약내역 조회 > [1] 예약취소
+     *
+     * desc: 회의실 예약 내역 조회 후 취소 process
+     * writer: 정지영
+     */
+    override suspend fun cancelReservation(phoneNumber: String) {
+        val reservationFile = File("Reservations.txt")
+        val reservations = reservationFile.readLines()
+        val filteredReservations = reservations.filterNot { line ->
+            val fields = line.split(",")
+
+            // 전화번호는 6번째 필드
+            fields[5].trim() == phoneNumber
+        }
+
+        // 필터링된 예약 정보로 파일 덮어쓰기
+        reservationFile.writeText(filteredReservations.joinToString("\n"))
     }
 }
