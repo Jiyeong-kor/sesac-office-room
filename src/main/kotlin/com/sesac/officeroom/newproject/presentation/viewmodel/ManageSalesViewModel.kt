@@ -11,26 +11,49 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
+/**
+ * ManageSalesViewModel: ManageSalesView에 사용할 로직들이 존재하는 뷰모델
+ * writer: 전지환
+ */
+
 class ManageSalesViewModel(private val repository:ManageOfficeRepository) {
-    suspend fun getOfficeList(): List<OfficeDTO> { //office정보를 가져오는 함수
+    /**
+     * office 정보를 가져오는 함수
+     */
+    suspend fun getOfficeList(): List<OfficeDTO> {
         return repository.getOfficeList()
     }
-    suspend fun getReservations(): List<ReservationDTO>{ //예약 정보를 가져오는 함수
+
+    /**
+     * 예약 정보를 가져오는 함수
+     */
+    suspend fun getReservations(): List<ReservationDTO>{
         return repository.getReservationList()
     }
 
-    fun getOfficeListMessage(officeList: List<OfficeDTO>): String { //회의실 목록을 가져와서 개행하여 문자열로 내보내는 함수
+    /**
+     * 회의실 목록을 가져와서 개행하여 문자열로 내보내는 함수
+     */
+    fun getOfficeListMessage(officeList: List<OfficeDTO>): String {
         return officeList.joinToString(prefix = Strings.ROOMS_INDEX, separator = Strings.NEW_LINE) {
-            "${officeList.indexOf(it) + 1}. ${it.name}"
+            String.format(Strings.ROOMS_NAME, officeList.indexOf(it) + 1, it.name)
         }
     }
-    suspend fun displayTotalOfficesSales() { //총 매출 출력 함수
+
+    /**
+     * 총 매출 출력 함수
+     */
+    suspend fun displayTotalOfficesSales() {
         val reservations = getReservations()
         val officeList = getOfficeList()
         val totalSales = calculateTotalSales(reservations, officeList)
         View.prettyPrintConsole(String.format(Strings.STEP_2_1_MESSAGE, totalSales))
     }
-    suspend fun displaySalesByOffice() { // 회의실 별 매출 출력 함수
+
+    /**
+     * 회의실 별 매출 출력 함수
+     */
+    suspend fun displaySalesByOffice() {
         val reservations = getReservations()
         val officeList = getOfficeList()
         val officeListMessage = getOfficeListMessage(officeList) //회의실 목록 출력
@@ -45,7 +68,11 @@ class ManageSalesViewModel(private val repository:ManageOfficeRepository) {
             View.prettyPrintConsole(Strings.ERROR_MESSAGE)
         }
     }
-    suspend fun displaySalesByDate(){ // 날짜 별 매출 출력 함수
+
+    /**
+     * 날짜 별 매출 출력 함수
+     */
+    suspend fun displaySalesByDate(){
         View.prettyPrintConsole(Strings.STEP_2_3_MESSAGE_1)
         val reservations = getReservations()
         val officeList = getOfficeList()
@@ -69,13 +96,21 @@ class ManageSalesViewModel(private val repository:ManageOfficeRepository) {
             View.prettyPrintConsole(Strings.STEP_2_3_ERROR)
         }
     }
-    suspend fun displayTotalUsers(){ //모든 회의실 사용자 수 출력 함수
+
+    /**
+     * 모든 회의실 사용자 수 출력 함수
+     */
+    suspend fun displayTotalUsers(){
         val reservations = getReservations()
         val totalUsers = reservations.sumOf { it.numberOfPeople }
         View.prettyPrintConsole(String.format(Strings.STEP_2_4_MESSAGE,totalUsers))
     }
-    fun calculateJustCost(reservation: ReservationDTO, officeList: List<OfficeDTO>): Int { //예약과 회의실 목록을 받아,
-        //회의실의 데이터를 토대로 금액을 계산하는 함수
+
+    /**
+     * 계산 관련 함수들
+     * calculateJustCost: 예약과 회의실 목록을 받아, 회의실의 데이터를 토대로 금액을 계산하는 함수
+     */
+    fun calculateJustCost(reservation: ReservationDTO, officeList: List<OfficeDTO>): Int {
         val office = officeList.first { it.id == reservation.officeId } //id에 중복은 없으므로 first를 사용하여 예약된 회의실 id를 찾음
         val baseCost = office.baseCostPerHour * reservation.usageTime //기본요금
         val additionalCost = if (reservation.numberOfPeople > office.baseCapacity) { //기준인원보다 많은 인원이 존재하는 경우에만 추가금액 계산
@@ -86,18 +121,27 @@ class ManageSalesViewModel(private val repository:ManageOfficeRepository) {
         return baseCost + additionalCost //기본요금에 추가요금 더해서 리턴
     }
 
+    /**
+     * 총 매출 반환 함수
+     */
     fun calculateTotalSales(reservations: List<ReservationDTO>, officeList: List<OfficeDTO>): Int {
         return reservations.sumOf { calculateJustCost(it, officeList) } //총 매출을 반환하는 함수
     }
 
+    /**
+     * 회의실 id를 같이 받아서 그 회의실 매출만 계산하는 함수
+     */
     fun calculateSalesByOffice(reservations: List<ReservationDTO>, officeList: List<OfficeDTO>, officeId: Int): Int {
         return reservations.filter { it.officeId == officeId }
-            .sumOf { calculateJustCost(it, officeList) } // 회의실 id를 같이 받아서 그 회의실 매출만 계산하는 함수
+            .sumOf { calculateJustCost(it, officeList) }
     }
 
+    /**
+     * 특정 날짜를 받아 그 날짜의 매출만 계산하여 반환하는 함수
+     */
     fun calculateSalesByDate(reservations: List<ReservationDTO>, officeList: List<OfficeDTO>, date: LocalDate): Int {
         return reservations.filter { it.date == date }
-            .sumOf { calculateJustCost(it, officeList) } //특정 날짜를 받아서 그 날짜의 매출만 계산하여 반환하는 함수
+            .sumOf { calculateJustCost(it, officeList) }
     }
 }
 
