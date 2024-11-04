@@ -26,8 +26,13 @@ object Strings {
     // 매출 관리
     const val STEP_2_MENU_MESSAGE = "[1]총 매출 조회 [2]회의실 별 매출조회 [3]날짜별 매출조회 [4]총 이용자 수 조회\n[0]메인 메뉴로 돌아가기"
     const val STEP_2_1_MESSAGE = "현재까지의 총 매출은 %d원 입니다."
-    const val STEP_2_2_MESSAGE = ""
-    const val STEP_2_3_MESSAGE = ""
+    const val STEP_2_2_MESSAGE = "%s의 매출은 %d원 입니다."
+    const val STEP_2_3_MESSAGE_1 = "조회하실 날짜를 입력하세요. (예: 2024-11-01)"
+    const val STEP_2_3_MESSAGE_2 = "%tY년 %tm월 %td일의 매출은 %d원 입니다."
+    const val STEP_2_3_MESSAGE_3 = "%tY년 %tm월 %td일에는 예약이 없습니다."
+    const val STEP_2_3_ERROR = "잘못된 날짜 형식입니다."
     const val STEP_2_4_MESSAGE = "현재까지의 총 이용자 수는 %d명 입니다."
+    const val ROOMS_INDEX = "회의실 목록:\n"
+
 
 }
