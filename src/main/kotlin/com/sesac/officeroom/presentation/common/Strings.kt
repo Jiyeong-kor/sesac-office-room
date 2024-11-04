@@ -6,6 +6,8 @@ object Strings {
     const val NEW_LINE = "\n"
     const val YES_MESSAGE = "있음"
     const val NO_MESSAGE = "없음"
+    const val EMPTY_OFFICE_FILE = "회의실 목록이 없어 빈 목록이 반환되었습니다."
+    const val EMPTY_RESERVATIONS_FILE = "예약 목록이 없어 빈 목록이 반환되었습니다."
 
     // 회의실 관리
     const val STEP_1_MENU_MESSAGE = "[1]회의실 예약하기 [2]회의실 정보 확인 [3]회의실 예약 내역 조회\n[0]메인 메뉴로 돌아가기"
