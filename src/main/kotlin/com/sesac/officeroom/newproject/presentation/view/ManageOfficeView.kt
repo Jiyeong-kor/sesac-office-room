@@ -166,10 +166,62 @@ class ManageOfficeView {
             View.prettyPrintConsole(Strings.STEP_1_2_MESSAGE)
 
             when(Input.isInt()) {
-                1 -> {}
-                2 -> {}
+                1 -> getOfficeList()
+                2 -> getReservationStatus()
                 0 -> break
             }
+        }
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [2]회의실 정보 확인 > [1]회의실 목록 조회
+     *
+     * desc: 회의실 목록 조회
+     * writer: 박혜선
+     */
+    private fun getOfficeList() {
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [2]회의실 정보 확인 > [2]회의실 별 예약현황 조회
+     *
+     * desc: 회의실 별 예약현황 조회
+     * writer: 박혜선
+     */
+    private fun getReservationStatus() {
+        runBlocking {
+            // 회의실 목록 안내
+            View.prettyPrintConsole(getOfficeListToString())
+
+            val officeId = Input.isInt()
+            val reservationList = viewModel.getReservationStatusByOffice(officeId)
+
+            when (reservationList.size) {
+                0 -> View.prettyPrintConsole(Strings.STEP_1_2_2_NO_RESERVATION_MESSAGE)
+                else -> View.createSchedule(reservationList)
+            }
+        }
+    }
+
+    /**
+     * 회의실 목록 조회 (형식: id.name)
+     *
+     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
+     * writer: 박혜선
+     */
+    private fun getOfficeListToString() : String {
+        return runBlocking {
+            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
+            val officeList = viewModel.getOfficeList().listIterator()
+            officeList.forEach {
+                builder.append(
+                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
+
+                // 다음 데이터가 있는 경우 줄바꿈 추가
+                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
+            }
+
+            builder.toString()
         }
     }
 

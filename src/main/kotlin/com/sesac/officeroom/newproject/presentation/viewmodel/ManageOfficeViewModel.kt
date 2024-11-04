@@ -35,6 +35,18 @@ class ManageOfficeViewModel(
     }
 
     /**
+     * 메인 > [1]회의실 관리 > [2]회의실 정보 확인 > [2]회의실 별 예약현황 조회
+     *
+     * desc: 회의실 별 예약 목록 불러오기
+     * writer: 박혜선
+     */
+    suspend fun getReservationStatusByOffice(officeId: Int): List<ReservationDTO> {
+        return manageOfficeRepository.getReservationList().filter { reservation ->
+            reservation.officeId == officeId
+        }
+    }
+
+    /**
      * 새로운 예약의 예약시간과 기존의 예약 시간에 충돌이 있는지 확인하는 함수
      * writer: 전지환
      */
