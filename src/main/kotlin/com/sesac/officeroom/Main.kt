@@ -5,7 +5,7 @@ import com.sesac.officeroom.presentation.view.OfficeManagerView
 /**
  * Main
  */
-suspend fun main() {
+fun main() {
     val manager = OfficeManagerView()
     manager.mainProcess()
 }

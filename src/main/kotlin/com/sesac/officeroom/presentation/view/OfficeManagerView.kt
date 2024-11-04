@@ -18,7 +18,7 @@ class OfficeManagerView {
     /**
      * 메인 process
      */
-    suspend fun mainProcess() {
+    fun mainProcess() {
         while (true) {
             View.prettyPrintConsole(Strings.MAIN_MESSAGE)
 
@@ -38,7 +38,7 @@ class OfficeManagerView {
      *
      * desc: 회의실 관리 process
      */
-    private suspend fun manageOfficeRoomProcess() {
+    private fun manageOfficeRoomProcess() {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_1_MENU_MESSAGE)
             when(Input.isInt()) {
@@ -56,7 +56,7 @@ class OfficeManagerView {
      * desc: 회의실 예약 process
      * writer: 정지영
      */
-    private suspend fun roomReservationProcess() {
+    private fun roomReservationProcess() {
         //조건을 입력받고 예약이 가능한 회의실을 보여줌
         val (availableRoomResult, numberOfPeople) = showAvailableRooms()
         //예약이 가능한 회의실이 존재하는지를 확인
@@ -101,11 +101,14 @@ class OfficeManagerView {
      * desc: 회의실 예약 process 중 지정된 날짜에 대해 예약 가능한 시간대를 반환
      * writer: 정지영
      */
-    private suspend fun getAvailableTimesForDate(officeId: Int, date: LocalDate): List<Int> {
-        //기존 예약 목록에서 특정 회의실 ID와 날짜에 해당하는 목록을 가져옴
-        val reservations = viewModel.getReservationList().filter { it.officeId == officeId && it.date == date }
-        //예약 가능한 시간을 저장할 리스트 생성
-        val availableTimes = mutableListOf<Int>()
+    private fun getAvailableTimesForDate(officeId: Int, date: LocalDate): List<Int> {
+
+            //기존 예약 목록에서 특정 회의실 ID와 날짜에 해당하는 목록을 가져옴
+            val reservations = runBlocking{
+                viewModel.getReservationList().filter { it.officeId == officeId && it.date == date }
+            }
+            //예약 가능한 시간을 저장할 리스트 생성
+            val availableTimes = mutableListOf<Int>()
 
         //9시부터 18시까지 새로운 예약 객체 생성
         for (hour in 9..17) {
@@ -174,7 +177,7 @@ class OfficeManagerView {
      * writer: 정지영
      */
     //TODO: showAvailableRooms()라는 이름이 정확한 기능과 같지 않아서 이름 변경 필요함
-    private suspend fun showAvailableRooms(): Pair<String, Int> {
+    private fun showAvailableRooms(): Pair<String, Int> {
         View.prettyPrintConsole(Strings.STEP_1_1_HEADER_MESSAGE)
         //인원 수 입력
         print(Strings.STEP_1_1_MESSAGE_1)
@@ -192,7 +195,9 @@ class OfficeManagerView {
             else -> false
         }
         //TODO: 입력 잘못 받았을 경우 예외처리 해주기
-        val officeList = viewModel.getOfficeList()
+        val officeList = runBlocking{
+            viewModel.getOfficeList()
+        }
         val result = officeList.mapNotNull { room ->
             getAvailableRoomInfo(room, capacity, needWindow, needFilmBooth)
             //필터링 된 회의실들을 받아서 줄 단위로 연결함
@@ -256,12 +261,14 @@ class OfficeManagerView {
      * desc: 회의실 예약 내역 process
      * writer: 정지영
      */
-    private suspend fun reservationInfoProcess() {
+    private fun reservationInfoProcess() {
         //핸드폰 번호 입력
         View.prettyPrintConsole(Strings.STEP_1_3_MESSAGE)
         val phoneNumber = Input.isString()
         //예약 내역 가져오기
-        val reservations = viewModel.getReservationList()
+        val reservations = runBlocking{
+            viewModel.getReservationList()
+        }
         val userReservations = reservations.filter { it.phoneNumber ==phoneNumber }
         //예약 내역이 없으면
         if (userReservations.isEmpty()) {
