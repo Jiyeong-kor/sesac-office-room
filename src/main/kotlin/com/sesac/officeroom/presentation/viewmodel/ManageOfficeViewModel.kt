@@ -82,25 +82,23 @@ class ManageOfficeViewModel(
      * desc: 회의실 예약 process 중 데이터를 저장하는 기능
      * writer: 정지영
      */
-    fun reserveDataOfRoom(
+    suspend fun reserveDataOfRoom(
         year: Int, month: Int, dayOfMonth: Int, hour: Int,
         officeId: Int, usageTime: Int, numberOfPeople: Int, phoneNumber: String
-    ) {
-        runBlocking {
-            val date = LocalDate.of(year, month, dayOfMonth)
-            val time = LocalTime.of(hour, 0)
-            val reservationDTO = ReservationDTO(
-                officeId,
-                date,
-                time,
-                usageTime,
-                numberOfPeople,
-                phoneNumber
-            )
+    ): Boolean {
+        val date = LocalDate.of(year, month, dayOfMonth)
+        val time = LocalTime.of(hour, 0)
+        val reservationDTO = ReservationDTO(
+            officeId,
+            date,
+            time,
+            usageTime,
+            numberOfPeople,
+            phoneNumber
+        )
 
-            //예약 생성
-            manageOfficeRepository.makeReservation(reservationDTO)
-        }
+        //예약 생성
+        return manageOfficeRepository.makeReservation(reservationDTO)
     }
 
     /**

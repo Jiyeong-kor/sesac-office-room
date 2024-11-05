@@ -1,5 +1,7 @@
 package com.sesac.officeroom.presentation.view
 
+import com.sesac.officeroom.data.source.OfficeDataSourceImpl
+import com.sesac.officeroom.data.source.ReservationsDataSourceImpl
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
@@ -13,7 +15,10 @@ import kotlinx.coroutines.runBlocking
  * desc: 회의실 관리 process
  */
 class ManageOfficeView {
-    private val viewModel = ManageOfficeViewModel(ManageOfficeRepositoryImpl())
+    private val viewModel = ManageOfficeViewModel(
+        ManageOfficeRepositoryImpl(
+            OfficeDataSourceImpl(), ReservationsDataSourceImpl()
+        ))
 
     fun main() {
         while (true) {
@@ -83,11 +88,18 @@ class ManageOfficeView {
             TODO: 저장 과정 중 '개행' 후 새로운 예약 정보 저장이 아닌 기존 예약 내역에 '콤마(,)'로 연결됨. 예약 조회 시 조회 불가 오류 발생
              */
 
-            //예약 정보 저장
-            viewModel.reserveDataOfRoom(
-                chosenDate.year, chosenDate.monthValue, chosenDate.dayOfMonth, startTime,
-                officeId, usageTime, numberOfPeople, phoneNumber
-            )
+            runBlocking {
+                //예약 정보 저장
+                val saveResult = viewModel.reserveDataOfRoom(
+                    chosenDate.year, chosenDate.monthValue, chosenDate.dayOfMonth, startTime,
+                    officeId, usageTime, numberOfPeople, phoneNumber
+                )
+
+                when(saveResult) {
+                    true -> println("예약 성공")
+                    false -> println("예약 실패")
+                }
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package com.sesac.officeroom.presentation.view
 
+import com.sesac.officeroom.data.source.OfficeDataSourceImpl
+import com.sesac.officeroom.data.source.ReservationsDataSourceImpl
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View
@@ -12,9 +14,13 @@ import kotlinx.coroutines.runBlocking
  *
  * desc: 매출 관리 process
  */
-//private val viewModel: ManageSalesViewModel)
 class ManageSalesView{
-    private val viewModel = ManageSalesViewModel(ManageOfficeRepositoryImpl())
+
+    private val viewModel = ManageSalesViewModel(
+        ManageOfficeRepositoryImpl(
+            OfficeDataSourceImpl(), ReservationsDataSourceImpl()
+        ))
+
     fun main() = runBlocking {
         while (true) {
             View.prettyPrintConsole(Strings.STEP_2_MENU_MESSAGE)

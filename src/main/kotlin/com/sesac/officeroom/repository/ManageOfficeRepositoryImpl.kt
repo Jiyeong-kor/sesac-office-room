@@ -2,24 +2,25 @@ package com.sesac.officeroom.repository
 
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
-import com.sesac.officeroom.data.toCSVString
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.sesac.officeroom.data.source.OfficeDataSource
+import com.sesac.officeroom.data.source.ReservationsDataSource
 import java.io.File
-import java.io.FileWriter
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
+class ManageOfficeRepositoryImpl(
+    private val officeDataSource: OfficeDataSource,
+    private val reservationsDataSource: ReservationsDataSource,
+): ManageOfficeRepository {
 
     /**
      * 사무실 목록 불러오기
      */
     override suspend fun getOfficeList(): List<OfficeDTO> {
         val officeRooms = mutableListOf<OfficeDTO>()
-        val file =
-            File("Office.txt")
+
+        var file = officeDataSource.readOfficeTxt()
 
         file.forEachLine { line ->
             val data = line.split(",")
@@ -44,25 +45,8 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
     /**
      * 예약하기: 예약 목록 추가
      */
-    override suspend fun makeReservation(reservationDTO: ReservationDTO) {
-        val file = File("Reservations.txt")
-
-        if (!file.exists()) {
-            withContext(Dispatchers.IO) {
-                file.createNewFile()
-            }
-        }
-
-        withContext(Dispatchers.IO) {
-            val fileWriter = FileWriter(file, true)
-            val bufferedWriter = fileWriter.buffered()
-
-            with(bufferedWriter) {
-                write("${reservationDTO.toCSVString()}\n")
-                flush()
-                close()
-            }
-        }
+    override suspend fun makeReservation(reservationDTO: ReservationDTO): Boolean {
+        return reservationsDataSource.saveReservationsTxt(reservationDTO)
     }
 
     /**
@@ -70,7 +54,7 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
      */
     override suspend fun getReservationList(): List<ReservationDTO> {
         val reservationData = mutableListOf<ReservationDTO>()
-        val file = File("Reservations.txt")
+        val file = reservationsDataSource.readReservationsTxt()
         file.forEachLine { line ->
             val data = line.split(",")
             if (data.size == 6) {
