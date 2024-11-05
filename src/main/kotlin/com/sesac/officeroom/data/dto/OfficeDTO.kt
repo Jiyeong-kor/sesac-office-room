@@ -1,4 +1,4 @@
-package com.sesac.officeroom.data
+package com.sesac.officeroom.data.dto
 
 /**
  * OfficeDTO

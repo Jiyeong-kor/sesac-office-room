@@ -1,7 +1,7 @@
 package com.sesac.officeroom.repository
 
-import com.sesac.officeroom.data.OfficeDTO
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.OfficeDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 
 interface ManageOfficeRepository {
     suspend fun getOfficeList(): List<OfficeDTO>

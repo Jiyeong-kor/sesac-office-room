@@ -1,7 +1,7 @@
 package com.sesac.officeroom.data.source
 
-import com.sesac.officeroom.data.ReservationDTO
-import com.sesac.officeroom.data.toCSVString
+import com.sesac.officeroom.data.dto.ReservationDTO
+import com.sesac.officeroom.data.dto.toCSVString
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileWriter

@@ -1,6 +1,6 @@
 package com.sesac.officeroom.data.source
 
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 import java.io.File
 
 interface ReservationsDataSource {

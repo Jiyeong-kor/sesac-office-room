@@ -1,7 +1,7 @@
 package com.sesac.officeroom.presentation.view
 
-import com.sesac.officeroom.data.OfficeDTO
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.OfficeDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 import com.sesac.officeroom.data.source.OfficeDataSourceImpl
 import com.sesac.officeroom.data.source.ReservationsDataSourceImpl
 import com.sesac.officeroom.presentation.common.Input

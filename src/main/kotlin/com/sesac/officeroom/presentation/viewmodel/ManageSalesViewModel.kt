@@ -1,7 +1,7 @@
 package com.sesac.officeroom.presentation.viewmodel
 
-import com.sesac.officeroom.data.OfficeDTO
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.OfficeDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import com.sesac.officeroom.presentation.common.View

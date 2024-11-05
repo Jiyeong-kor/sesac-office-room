@@ -1,12 +1,11 @@
 package com.sesac.officeroom.repository
 
-import com.sesac.officeroom.data.OfficeDTO
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.OfficeDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 import com.sesac.officeroom.data.source.OfficeDataSource
 import com.sesac.officeroom.data.source.ReservationsDataSource
 import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
-import java.io.File
 import java.io.FileNotFoundException
 import java.time.LocalDate
 import java.time.LocalTime
