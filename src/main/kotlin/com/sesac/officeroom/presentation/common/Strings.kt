@@ -36,7 +36,7 @@ object Strings {
     const val STEP_1_3_NUMBER_FOUND = "해당 전화번호로 예약된 내역"
     const val STEP_1_3_RESERVATION_INFO_FORMAT = "%d번 회의실, 예약 날짜: %s, 예약 시간: %s, 이용 시간: %d시간, 인원: %d"
 
-    const val STEP_1_3_MENU_MESSAGE = "[1]예약취소 [2]공유하기 [0]메뉴로 돌아가기"
+    const val STEP_1_3_MENU_MESSAGE = "[1]예약취소 [0]메뉴로 돌아가기"
     const val STEP_1_3_CANCEL_RESERVATION = "예약이 성공적으로 취소되었습니다."
 
     // 매출 관리
