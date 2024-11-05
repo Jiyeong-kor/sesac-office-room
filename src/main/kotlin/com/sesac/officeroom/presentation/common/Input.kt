@@ -24,9 +24,9 @@ object Input {
         return try {
             scanner.nextLine().toInt()
         } catch (e:NumberFormatException) {
-            -1
+            -999
         } catch (e:Exception) {
-            -1
+            -998
         }
     }
 

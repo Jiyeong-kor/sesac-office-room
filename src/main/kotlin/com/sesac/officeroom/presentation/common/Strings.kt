@@ -27,7 +27,6 @@ object Strings {
     const val STEP_1_2_MESSAGE = "[1]회의실 목록 조회 [2]회의실 별 예약현황 조회 [0]메뉴로 돌아가기"
 
     const val STEP_1_2_2_TITLE_MESSAGE = "예약현황을 확인할 회의실 번호를 입력해주세요\n"
-    const val STEP_1_2_2_OFFICE_INFO_MESSAGE = "%d.%s"
     const val STEP_1_2_2_NO_RESERVATION_MESSAGE = "예약 내역이 존재하지 않습니다."
 
     const val STEP_1_3_MESSAGE = "하이픈(-)을 제외한 예약자의 휴대폰번호를 입력해주세요."
@@ -48,6 +47,4 @@ object Strings {
     const val STEP_2_4_MESSAGE = "현재까지의 총 이용자 수는 %d명 입니다."
     const val ROOMS_INDEX = "회의실 목록:\n"
     const val ROOMS_NAME = "%d. %s"
-
-
 }

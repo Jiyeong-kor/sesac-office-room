@@ -30,8 +30,6 @@ class ManageOfficeView {
             }
         }
     }
-
-
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
      *
@@ -258,7 +256,8 @@ class ManageOfficeView {
     private fun getReservationStatus() {
         runBlocking {
             // 회의실 목록 안내
-            View.prettyPrintConsole(getOfficeListToString())
+            val officeList = viewModel.getOfficeList()
+            View.prettyPrintConsole(getOfficeListMessage(officeList))
 
             val officeId = Input.isInt()
             val reservationList = viewModel.getReservationStatusByOffice(officeId)
@@ -276,22 +275,11 @@ class ManageOfficeView {
      * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
      * writer: 박혜선
      */
-    private fun getOfficeListToString() : String {
-        return runBlocking {
-            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
-            val officeList = viewModel.getOfficeList().listIterator()
-            officeList.forEach {
-                builder.append(
-                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
-
-                // 다음 데이터가 있는 경우 줄바꿈 추가
-                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
-            }
-
-            builder.toString()
+    private fun getOfficeListMessage(officeList: List<OfficeDTO>): String {
+        return officeList.joinToString(prefix = Strings.STEP_1_2_2_TITLE_MESSAGE, separator = Strings.NEW_LINE) {
+            String.format(Strings.ROOMS_NAME, officeList.indexOf(it) + 1, it.name)
         }
     }
-
     /**
      * 메인 > [1]회의실 관리 > [3]회의실 예약내역 조회
      *
