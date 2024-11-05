@@ -1,6 +1,6 @@
 package com.sesac.officeroom.presentation.common
 
-import com.sesac.officeroom.data.ReservationDTO
+import com.sesac.officeroom.data.dto.ReservationDTO
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
