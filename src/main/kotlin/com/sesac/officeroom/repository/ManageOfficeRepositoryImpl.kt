@@ -3,16 +3,17 @@ package com.sesac.officeroom.repository
 import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
 import com.sesac.officeroom.data.toCSVString
+import com.sesac.officeroom.presentation.common.Strings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileWriter
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
-
     /**
      * 사무실 목록 불러오기
      */
@@ -20,25 +21,28 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
         val officeRooms = mutableListOf<OfficeDTO>()
         val file =
             File("Office.txt")
-
-        file.forEachLine { line ->
-            val data = line.split(",")
-            if (data.size == 8) {
-                val officeDTO = OfficeDTO(
-                    id = data[0].toInt(),
-                    name = data[1],
-                    baseCapacity = data[2].toInt(),
-                    maxCapacity = data[3].toInt(),
-                    baseCostPerHour = data[4].toInt(),
-                    additionalCostPerPerson = data[5].toInt(),
-                    hasWindow = data[6].toBoolean(),
-                    hasFilmBooth = data[7].toBoolean()
-                )
-                officeRooms.add(officeDTO)
+        return try {
+            file.forEachLine { line ->
+                val data = line.split(",")
+                if (data.size == 8) {
+                    val officeDTO = OfficeDTO(
+                        id = data[0].toInt(),
+                        name = data[1],
+                        baseCapacity = data[2].toInt(),
+                        maxCapacity = data[3].toInt(),
+                        baseCostPerHour = data[4].toInt(),
+                        additionalCostPerPerson = data[5].toInt(),
+                        hasWindow = data[6].toBoolean(),
+                        hasFilmBooth = data[7].toBoolean()
+                    )
+                    officeRooms.add(officeDTO)
+                }
             }
+            officeRooms
+        } catch (e: FileNotFoundException) {
+            println(Strings.EMPTY_OFFICE_FILE)
+            emptyList()
         }
-
-        return officeRooms
     }
 
     /**
@@ -52,7 +56,6 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
                 file.createNewFile()
             }
         }
-
         withContext(Dispatchers.IO) {
             val fileWriter = FileWriter(file, true)
             val bufferedWriter = fileWriter.buffered()
@@ -71,26 +74,32 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
     override suspend fun getReservationList(): List<ReservationDTO> {
         val reservationData = mutableListOf<ReservationDTO>()
         val file = File("Reservations.txt")
-        file.forEachLine { line ->
-            val data = line.split(",")
-            if (data.size == 6) {
-                val reservationDataDTO = ReservationDTO(
-                    officeId = data[0].toInt(),
-
-                    //date가 LocalDate 타입이므로, 스트링으로 저장된 data[1]을 파싱함
-                    date = LocalDate.parse(data[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-
-                    //마찬가지로 reservationTime은 LocalTime 타입임
-                    reservationTime = LocalTime.parse(data[2], DateTimeFormatter.ofPattern("HH:mm")),
-
-                    usageTime = data[3].toInt(),
-                    numberOfPeople = data[4].toInt(),
-                    phoneNumber = data[5]
-                )
-                reservationData.add(reservationDataDTO)
+        return try {
+            file.forEachLine { line ->
+                val data = line.split(",")
+                if (data.size == 6) {
+                    val reservationDataDTO = ReservationDTO(
+                        officeId = data[0].toInt(),
+                        date = LocalDate.parse(
+                            data[1],
+                            DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                        ), //date가 LocalDate 타입이므로, 스트링으로 저장된 data[1]을 파싱함
+                        reservationTime = LocalTime.parse(
+                            data[2],
+                            DateTimeFormatter.ofPattern("HH:mm")
+                        ), //마찬가지로 reservationTime은 LocalTime 타입임
+                        usageTime = data[3].toInt(),
+                        numberOfPeople = data[4].toInt(),
+                        phoneNumber = data[5]
+                    )
+                    reservationData.add(reservationDataDTO)
+                }
             }
+            reservationData
+        } catch (e: FileNotFoundException) {
+            println(Strings.EMPTY_RESERVATIONS_FILE)
+            emptyList()
         }
-        return reservationData
     }
 
     /**

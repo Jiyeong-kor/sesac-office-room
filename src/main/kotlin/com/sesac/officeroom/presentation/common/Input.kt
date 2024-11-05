@@ -1,5 +1,7 @@
 package com.sesac.officeroom.presentation.common
 
+import java.lang.Exception
+import java.lang.NumberFormatException
 import java.util.*
 
 /**
@@ -9,6 +11,30 @@ import java.util.*
  */
 object Input {
     private val scanner = Scanner(System.`in`)
-    fun isString() = scanner.nextLine()
-    fun isInt() = scanner.nextLine().toInt()
+    fun isString():String{
+        return try {
+            scanner.nextLine()
+        } catch (e: Exception) {
+            println(Strings.ERROR_MESSAGE)
+            ""
+        }
+    }
+
+    fun isInt(): Int{
+        return try {
+            scanner.nextLine().toInt()
+        } catch (e:NumberFormatException) {
+            -999
+        } catch (e:Exception) {
+            -998
+        }
+    }
+
+
+
+
+
+
+
+
 }
