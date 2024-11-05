@@ -50,6 +50,7 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
      */
     override suspend fun makeReservation(reservationDTO: ReservationDTO) {
         val file = File("Reservations.txt")
+
         if (!file.exists()) {
             withContext(Dispatchers.IO) {
                 file.createNewFile()
@@ -99,5 +100,25 @@ class ManageOfficeRepositoryImpl(): ManageOfficeRepository {
             println(Strings.EMPTY_RESERVATIONS_FILE)
             emptyList()
         }
+    }
+
+    /**
+     * 메인 > [1]회의실 관리 > [3]회의실 예약내역 조회 > [1] 예약취소
+     *
+     * desc: 회의실 예약 내역 조회 후 취소 process
+     * writer: 정지영
+     */
+    override suspend fun cancelReservation(phoneNumber: String) {
+        val reservationFile = File("Reservations.txt")
+        val reservations = reservationFile.readLines()
+        val filteredReservations = reservations.filterNot { line ->
+            val fields = line.split(",")
+
+            // 전화번호는 6번째 필드
+            fields[5].trim() == phoneNumber
+        }
+
+        // 필터링된 예약 정보로 파일 덮어쓰기
+        reservationFile.writeText(filteredReservations.joinToString("\n"))
     }
 }
