@@ -11,6 +11,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class ManageOfficeViewModel(
     private val manageOfficeRepository: ManageOfficeRepository
@@ -196,6 +198,37 @@ class ManageOfficeViewModel(
             reservation.officeId == officeId
         }
     }
+
+    /**
+     * 겹치는 예약이 있는지 확인
+     *
+     * writer: 박혜선
+     *
+     * @param officeId
+     * @param date
+     * @param startTime
+     * @param usageTime
+     * @return
+     */
+    suspend fun checkAvailableTime(
+        officeId: Int,
+        date: LocalDate,
+        startTime: Int,
+        usageTime: Int
+    ): Boolean {
+        val startTimeParsed = LocalTime.of(startTime, 0)
+        val endTimeParsed = startTimeParsed.plusHours(usageTime.toLong())
+
+        val reservations = getReservationList().filter {
+            it.officeId == officeId && it.date == date
+        }
+
+        return reservations.none { reservation ->
+            val reservationEndTime = reservation.reservationTime.plusHours(reservation.usageTime.toLong())
+            startTimeParsed.isBefore(reservationEndTime) && endTimeParsed.isAfter(reservation.reservationTime)
+        }
+    }
+
 
     /**
      * 새로운 예약의 예약시간과 기존의 예약 시간에 충돌이 있는지 확인하는 함수

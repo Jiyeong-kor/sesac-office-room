@@ -82,13 +82,16 @@ class ManageOfficeView {
             View.prettyPrintConsole(Strings.STEP_1_1_USAGE_TIME_CHOOSE)
             val usageTime = Input.isInt()
 
+            // 겹치는 시간대가 있는지 확인
+            val isAvailableTime = runBlocking {
+                viewModel.checkAvailableTime(officeId, chosenDate, startTime, usageTime)
+            }
+            if(!isAvailableTime)
+                return View.prettyPrintConsole("예약이 불가능한 날짜입니다.")
+
             //휴대폰 번호 입력 받기
             View.prettyPrintConsole(Strings.STEP_1_3_MESSAGE)
             val phoneNumber = Input.isString()
-
-            /*
-            TODO: 저장 과정 중 '개행' 후 새로운 예약 정보 저장이 아닌 기존 예약 내역에 '콤마(,)'로 연결됨. 예약 조회 시 조회 불가 오류 발생
-             */
 
             runBlocking {
                 //예약 정보 저장
@@ -97,10 +100,12 @@ class ManageOfficeView {
                     officeId, usageTime, numberOfPeople, phoneNumber
                 )
 
-                when(saveResult) {
-                    true -> println("예약 성공")
-                    false -> println("예약 실패")
-                }
+                View.prettyPrintConsole(
+                    when(saveResult) {
+                        true -> "예약 성공"
+                        false -> "예약 실패"
+                    }
+                )
             }
         }
     }

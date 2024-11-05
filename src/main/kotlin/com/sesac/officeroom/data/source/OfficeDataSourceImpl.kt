@@ -23,9 +23,9 @@ class OfficeDataSourceImpl() : OfficeDataSource {
                 runCatching {
                     result = File("C:\\Users\\cjh19\\Documents\\GitHub\\sesac-office-room\\src\\main\\kotlin\\com\\sesac\\officeroom\\data\\Office.txt")
                 }.onFailure {
-                    println("readOfficeTxt() : IOException ")
+                    // println("readOfficeTxt() : IOException ")
                 }.onSuccess {
-                    println("readOfficeTxt() : Success ")
+                    // println("readOfficeTxt() : Success ")
                 }
              }.await()
              result!!

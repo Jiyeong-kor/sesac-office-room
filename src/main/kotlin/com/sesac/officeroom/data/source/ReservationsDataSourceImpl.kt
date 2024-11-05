@@ -26,9 +26,9 @@ class ReservationsDataSourceImpl(): ReservationsDataSource {
                     }
                     result = file
                 }.onFailure {
-                    println("readReservationsTxt() : IOException ")
+                    //println("readReservationsTxt() : IOException ")
                 }.onSuccess {
-                    println("readReservationsTxt() : Success ")
+                    //println("readReservationsTxt() : Success ")
                 }
             }.await()
             result!!
