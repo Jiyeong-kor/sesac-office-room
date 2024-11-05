@@ -20,7 +20,7 @@ class ReservationsDataSourceImpl(): ReservationsDataSource {
             var result: File? = null
             ioDispatcher.async {
                 runCatching {
-                    val file = File("Reservations.txt")
+                    val file = File("C:\\Users\\cjh19\\Documents\\GitHub\\sesac-office-room\\src\\main\\kotlin\\com\\sesac\\officeroom\\data\\Reservations.txt")
                     if (!file.exists()) {
                         file.createNewFile()
                     }
@@ -48,7 +48,7 @@ class ReservationsDataSourceImpl(): ReservationsDataSource {
             var result = false
             ioDispatcher.async {
                 runCatching {
-                    val file = File("Reservations.txt")
+                    val file = File("C:\\Users\\cjh19\\Documents\\GitHub\\sesac-office-room\\src\\main\\kotlin\\com\\sesac\\officeroom\\data\\Reservations.txt")
                     if (!file.exists()) {
                         withContext(Dispatchers.IO) {
                             file.createNewFile()

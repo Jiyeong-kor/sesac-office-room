@@ -21,7 +21,7 @@ class OfficeDataSourceImpl() : OfficeDataSource {
              var result: File? = null
              ioDispatcher.async {
                 runCatching {
-                    result = File("/Users/hyeseon/KotlinPractice/SeSACOfficeRoom/src/main/kotlin/com/sesac/officeroom/data/Office.txt")
+                    result = File("C:\\Users\\cjh19\\Documents\\GitHub\\sesac-office-room\\src\\main\\kotlin\\com\\sesac\\officeroom\\data\\Office.txt")
                 }.onFailure {
                     println("readOfficeTxt() : IOException ")
                 }.onSuccess {

@@ -31,7 +31,7 @@ object Strings {
     const val STEP_1_2_2_TITLE_MESSAGE = "예약현황을 확인할 회의실 번호를 입력해주세요\n"
     const val STEP_1_2_2_NO_RESERVATION_MESSAGE = "예약 내역이 존재하지 않습니다."
 
-    const val STEP_1_3_MESSAGE = "하이픈(-)을 제외한 예약자의 휴대폰번호를 입력해주세요."
+    const val STEP_1_3_MESSAGE = "하이픈(-)을 포함한 예약자의 휴대폰번호를 입력해주세요."
     const val STEP_1_3_NO_NUMBER_FOUND = "해당 전화번호로 예약된 내역이 없습니다."
     const val STEP_1_3_NUMBER_FOUND = "해당 전화번호로 예약된 내역"
     const val STEP_1_3_RESERVATION_INFO_FORMAT = "%d번 회의실, 예약 날짜: %s, 예약 시간: %s, 이용 시간: %d시간, 인원: %d"

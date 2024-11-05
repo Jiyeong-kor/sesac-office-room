@@ -1,6 +1,7 @@
 package com.sesac.officeroom.presentation.view
 
 import com.sesac.officeroom.data.OfficeDTO
+import com.sesac.officeroom.data.ReservationDTO
 import com.sesac.officeroom.data.source.OfficeDataSourceImpl
 import com.sesac.officeroom.data.source.ReservationsDataSourceImpl
 import com.sesac.officeroom.presentation.common.Input
@@ -207,16 +208,16 @@ class ManageOfficeView {
                 )
                 println(formattedMessage)
 
-                while (true) {
-                    View.prettyPrintConsole(Strings.STEP_1_3_MENU_MESSAGE)
+            }
 
-                        when (Input.isInt()) {
-                            1 -> cancelReservation(phoneNumber)
-                            2 -> {} //공유하기
-                            0 -> break
-                        }
-                    }
+            while (true) {
+                View.prettyPrintConsole(Strings.STEP_1_3_MENU_MESSAGE)
 
+                when (Input.isInt()) {
+                    1 -> cancelReservation(phoneNumber, userReservations)
+                    2 -> {} //공유하기
+                    0 -> break
+                }
             }
         }
     }
@@ -227,9 +228,9 @@ class ManageOfficeView {
      * desc: 회의실 예약 내역 후 취소 process
      * writer: 정지영
      */
-    private fun cancelReservation(phoneNumber: String) {
+    private fun cancelReservation(phoneNumber: String, userReservations:List<ReservationDTO>) {
         runBlocking {
-            viewModel.cancelReservation(phoneNumber)
+            viewModel.cancelReservation(phoneNumber, userReservations)
             View.prettyPrintConsole(Strings.STEP_1_3_CANCEL_RESERVATION)
         }
     }

@@ -4,6 +4,7 @@ import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.ReservationDTO
 import com.sesac.officeroom.data.source.OfficeDataSource
 import com.sesac.officeroom.data.source.ReservationsDataSource
+import com.sesac.officeroom.presentation.common.Input
 import com.sesac.officeroom.presentation.common.Strings
 import java.io.File
 import java.io.FileNotFoundException
@@ -94,17 +95,59 @@ class ManageOfficeRepositoryImpl(
      * desc: 회의실 예약 내역 조회 후 취소 process
      * writer: 정지영
      */
-    override suspend fun cancelReservation(phoneNumber: String) {
-        val reservationFile = File("Reservations.txt")
-        val reservations = reservationFile.readLines()
-        val filteredReservations = reservations.filterNot { line ->
-            val fields = line.split(",")
 
-            // 전화번호는 6번째 필드
-            fields[5].trim() == phoneNumber
+    override suspend fun cancelReservation(phoneNumber: String, userReservations: List<ReservationDTO>) {
+        val file = reservationsDataSource.readReservationsTxt()
+        val reservations = file.readLines()
+
+        if (userReservations.isEmpty()) {
+            println(Strings.STEP_1_3_NO_NUMBER_FOUND)
+            return
         }
 
-        // 필터링된 예약 정보로 파일 덮어쓰기
-        reservationFile.writeText(filteredReservations.joinToString("\n"))
+        // 사용자 예약을 인덱스와 함께 표시
+        println(Strings.STEP_1_3_NUMBER_FOUND)
+        userReservations.forEachIndexed { index, reservation ->
+            println("${index + 1}. 사무실 ID: ${reservation.officeId}, 날짜: ${reservation.date}, 시간: ${reservation.reservationTime}, 인원수: ${reservation.numberOfPeople}")
+        }
+
+        // 취소할 예약 번호 입력 받기
+        val selectedIndex = Input.isInt() - 1
+
+        if (selectedIndex < 0 || selectedIndex >= userReservations.size) {
+            println(Strings.ERROR_MESSAGE)
+            return
+        }
+
+        // 선택된 예약 제거
+        val selectedReservation = userReservations[selectedIndex]
+        val filteredReservations = reservations.filterNot { line ->
+            val fields = line.split(",")
+            fields[0].toInt() == selectedReservation.officeId &&
+                    LocalDate.parse(fields[1], DateTimeFormatter.ofPattern("yyyy-MM-dd")) == selectedReservation.date &&
+                    LocalTime.parse(fields[2], DateTimeFormatter.ofPattern("HH:mm")) == selectedReservation.reservationTime &&
+                    fields[3].toInt() == selectedReservation.usageTime &&
+                    fields[4].toInt() == selectedReservation.numberOfPeople &&
+                    fields[5].trim() == selectedReservation.phoneNumber
+        }
+        // 업데이트된 예약 내용을 파일에 다시 쓰기
+        file.writeText(filteredReservations.joinToString("\n"))
+        println(Strings.STEP_1_3_CANCEL_RESERVATION)
     }
+
+
+
+//    override suspend fun cancelReservation(phoneNumber: String) {
+//        val file = reservationsDataSource.readReservationsTxt()
+//        val reservations = file.readLines()
+//        val filteredReservations = reservations.filterNot { line ->
+//            val fields = line.split(",")
+//
+//            // 전화번호는 6번째 필드
+//            fields[5].trim() == phoneNumber
+//        }
+//
+//        // 필터링된 예약 정보로 파일 덮어쓰기
+//        file.writeText(filteredReservations.joinToString("\n"))
+//    }
 }

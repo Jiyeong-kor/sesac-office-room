@@ -253,7 +253,7 @@ class ManageOfficeViewModel(
      *
      * writer: 정지영
      */
-    suspend fun cancelReservation(phoneNumber: String) {
-        manageOfficeRepository.cancelReservation(phoneNumber)
+    suspend fun cancelReservation(phoneNumber: String, userReservations:List<ReservationDTO>) {
+        manageOfficeRepository.cancelReservation(phoneNumber, userReservations)
     }
 }
