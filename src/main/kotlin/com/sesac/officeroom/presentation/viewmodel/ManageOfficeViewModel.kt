@@ -235,29 +235,6 @@ class ManageOfficeViewModel(
         return true
     }
 
-
-    /**
-     * 회의실 목록 조회 (형식: id.name)
-     *
-     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
-     * writer: 박혜선
-     */
-    fun getOfficeListToString() : String {
-        return runBlocking {
-            val builder = StringBuilder(Strings.STEP_1_2_2_TITLE_MESSAGE)
-            val officeList = getOfficeList().listIterator()
-            officeList.forEach {
-                builder.append(
-                    String.format(Strings.STEP_1_2_2_OFFICE_INFO_MESSAGE, it.id, it.name))
-
-                // 다음 데이터가 있는 경우 줄바꿈 추가
-                if(officeList.hasNext()) builder.append(Strings.NEW_LINE)
-            }
-
-            builder.toString()
-        }
-    }
-
     /**
      * Office item을 String 형식으로 변환
      * 형식: (id. name: 기준 인원 n명, 최대 인원 n명, 기본 요금 n원, 인당 추가 요금 n원, 창문 있음/없음, 포토부스 있음/없음)

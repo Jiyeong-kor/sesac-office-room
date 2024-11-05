@@ -1,5 +1,6 @@
 package com.sesac.officeroom.presentation.view
 
+import com.sesac.officeroom.data.OfficeDTO
 import com.sesac.officeroom.data.source.OfficeDataSourceImpl
 import com.sesac.officeroom.data.source.ReservationsDataSourceImpl
 import com.sesac.officeroom.presentation.common.Input
@@ -31,7 +32,7 @@ class ManageOfficeView {
             }
         }
     }
-
+    
     /**
      * 메인 > [1]회의실 관리 > [1]회의실 예약
      *
@@ -144,7 +145,8 @@ class ManageOfficeView {
     private fun getReservationStatus() {
         runBlocking {
             // 회의실 목록 안내
-            View.prettyPrintConsole(viewModel.getOfficeListToString())
+            val officeList = viewModel.getOfficeList()
+            View.prettyPrintConsole(getOfficeListMessage(officeList))
 
             val officeId = Input.isInt()
             val reservationList = viewModel.getReservationStatusByOffice(officeId)
@@ -156,6 +158,18 @@ class ManageOfficeView {
         }
     }
 
+    /**
+     * 회의실 목록 조회 (형식: id.name)
+     *
+     * desc: 회의실 목록을 양식에 맞게 변환하여 String 값으로 return 하는 함수
+     * writer: 박혜선
+     */
+    private fun getOfficeListMessage(officeList: List<OfficeDTO>): String {
+        return officeList.joinToString(prefix = Strings.STEP_1_2_2_TITLE_MESSAGE, separator = Strings.NEW_LINE) {
+            String.format(Strings.ROOMS_NAME, officeList.indexOf(it) + 1, it.name)
+        }
+    }
+    
     /**
      * 메인 > [1]회의실 관리 > [3]회의실 예약내역 조회
      *
